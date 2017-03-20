@@ -1,0 +1,39 @@
+{
+  "name": "extensions",
+  "version": "0.0.1",
+  "engines": {
+    "node": "6.1.0",
+    "npm": "4.0.5"
+  },
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/twixlyhq/extensions.git"
+  },
+  "scripts": {
+    "start": "node server"
+  },
+  "author": "Gabriel Lantz <cms.io>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "1.0.1",
+    "compression": "1.5.0",
+    "express": "4.0.0",
+    "express-session": "1.7.6",
+    "swig": "1.4.2"
+  },
+  "devDependencies": {
+    "browserify": "6.2.0",
+    "envify": "3.0.0",
+    "jest-cli": "0.1.17",
+    "reactify": "0.15.2",
+    "uglify-js": "2.4.15",
+    "watchify": "3.2.3"
+  },
+  "browserify": {
+    "transform": [
+      "reactify",
+      "envify"
+    ]
+  }
+}

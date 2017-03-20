@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>{{title}}</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
+    <link rel="shortcut icon" href="/assets/icon-16.png"/>
+    {% if process_env.NODE_ENV %}
+      <link rel="stylesheet" href="//sdk.cloudpen.io/css/cms-uikit-0.1.0.css">
+    {% else %}
+      <link rel="stylesheet" href="//localhost:8000/css/cms-uikit-0.1.0.css">
+    {% endif %}
+  </head>
+  <body>
+    {% if process_env.NODE_ENV %}
+      <script src="//sdk.cloudpen.io/js/cms-uikit-0.1.0.js"></script>
+    {% else %}
+      <script>window.envLocal = true;</script>
+      <script src="//localhost:8000/js/cms-uikit-0.1.0-dev.js"></script>
+    {% endif %}
+    {% set extension_template = extension_name + '.html' %}
+    {% include extension_template %}
+  </body>
+</html>
