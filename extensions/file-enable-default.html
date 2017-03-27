@@ -1,0 +1,84 @@
+<input type="text" name="file" class="form-control">
+
+<script>
+  var height = undefined;
+  function appStart(extension) {
+    var formGroup = document.querySelector('body');
+    var inputField = document.querySelector('input');
+    var fieldValue = extension.field.getValue();
+    var fieldId = extension.field.id;
+    console.log(extension);
+    // console.log('File default: ', extension.field);
+    
+    function setInputFieldValue(extension) {
+      inputField.value = fieldValue ? fieldValue : '';
+    }
+
+    function renderTemplate(extension) {
+      var uiSchema = extension.itemType.attributes.ui_schema;
+      var placeholder = uiSchema[fieldId] && uiSchema[fieldId]['ui:placeholder'];
+      if (placeholder) {
+        inputField.setAttribute('placeholder', placeholder);
+      }
+    }
+
+    function setEvents(extension) {
+      inputField.addEventListener('blur', function(e) {
+        extension.field.validate();
+        // extension.field.setValue(e.target.value);
+      });
+      extension.item.attributes.title.onChange(function (field) {
+        console.log(field);
+      });
+      extension.field.onChange(function (field) {
+        // console.log(extension.field.getValue());
+      });
+
+      extension.field.onValidate(function (field) {
+        extension.field.setInvalid(false);
+        formGroup.className = '';
+        if (document.activeElement.name !== 'file') {
+          if (field.errors && field.errors.length) {
+            formGroup.className = 'has-error';
+            extension.field.setInvalid(true);
+          }
+        }
+        extension.window.updateHeight(height);
+      });
+      // extension.field.onChange(function (field) {
+      //   extension.field.setInvalid(false);
+      //   formGroup.className = '';
+      //   if (document.activeElement.name !== 'file') {
+      //     if (field.errors && field.errors.length) {
+      //       formGroup.className = 'has-error';
+      //       extension.field.setInvalid(true);
+      //     }
+      //   }
+      //   extension.window.updateHeight(height);
+      // });
+      inputField.addEventListener('keyup', function(e) {
+        extension.field.setValue(e.target.value)
+          .then(function(field) {
+            extension.field.validate();
+          })
+          .catch(function (err) {console.log(err);});
+        if(e.keyCode === 13) {
+          extension.form.submit()
+            .then(function(res) {console.log(res);})
+            .catch(function (err) {console.log(err);});
+        }
+      }, false); 
+    }
+    setInputFieldValue(extension);
+    renderTemplate(extension);
+    setEvents(extension);
+    extension.window.updateHeight(height);
+    // inputField.focus();
+  }
+
+  twixly.extension.init({ enableDefault: ['label', 'description', 'errors'], height: height })
+    .then(appStart)
+    .catch(function (err) {
+      console.log(err);
+    });
+</script>

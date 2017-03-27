@@ -1,0 +1,57 @@
+<div class="js-items"></div>
+<script>
+  function appStart(extension) {
+    // CRUD Test
+    // var item = {
+    //   type: 'items',
+    //   attributes: {
+    //     title: 'Test',
+    //     slug: 'test'
+    //   },
+    //   meta: {
+    //     item_type: {
+    //       data: {
+    //         type: 'item-types',
+    //         id: 'test-extension'
+    //       }
+    //     }
+    //   }
+    // };
+    // extension.bucket.post('items', { data: item })
+    //   .then(function(res) {
+    //     console.log(res);
+    //     extension.bucket.put('items/' + res.data.id, { data: res.data })
+    //       .then(function(res) {
+    //         console.log(res);
+    //         extension.bucket.delete('items/' + res.data.id)
+    //           .then(function(res) {
+    //             console.log(res);
+    //           })
+    //           .catch(function(err) {
+    //             console.log(err);
+    //           });
+    //       })
+    //       .catch(function(err) {
+    //         console.log(err);
+    //       });
+    //     extension.bucket.get('items', {item_type: 'test-extension'})
+    //       .then(function(items) {
+    //         console.log(items);
+    //       })
+    //       .catch(function(err) {
+    //         console.log(err);
+    //       });
+    //   })
+    //   .catch(function(err) {
+    //     console.log(err);
+    //   });
+    
+    // extension.window.updateHeight();
+  }
+
+  twixly.extension.init({ enableDefault: ['*'] })
+    .then(appStart)
+    .catch(function (err) {
+      console.log(err);
+    });
+</script>

@@ -1,0 +1,53 @@
+<input type="text" name="title" class="form-control">
+<script>
+  function appStart(extension) {
+    var formGroup = document.querySelector('body');
+    var titleField = document.querySelector('input');
+    var fieldValue = extension.field.getValue();
+    
+    titleField.value = fieldValue ? fieldValue : '';
+    
+    // extension.field.onValidate(function (field) {
+    //   extension.field.setInvalid(false);
+    //   formGroup.className = '';
+    //   if (document.activeElement.name !== 'title') {
+    //     if (field.errors && field.errors.length) {
+    //       formGroup.className = 'has-error';
+    //       extension.field.setInvalid(true);
+    //     }
+    //   }
+    //   extension.window.updateHeight();
+    // });
+
+    extension.field.onChange(function (field) {
+      extension.field.setInvalid(false);
+      formGroup.className = '';
+      if (document.activeElement.name !== 'title') {
+        if (field.errors && field.errors.length) {
+          formGroup.className = 'has-error';
+          extension.field.setInvalid(true);
+        }
+      }
+      extension.window.updateHeight();
+    });
+
+    titleField.addEventListener('blur', function(e) {
+      extension.field.setValue(e.target.value);
+    });
+    
+    titleField.addEventListener('keyup', function(e) {
+      extension.field.setValue(e.target.value)
+      if(e.keyCode === 13) {
+        extension.form.submit()
+      }
+    }, false); 
+
+    extension.window.updateHeight();
+  }
+
+  twixly.extension.init({ enableDefault: ['*'] })
+    .then(appStart)
+    .catch(function (err) {
+      console.log(err);
+    });
+</script>

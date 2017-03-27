@@ -1,0 +1,92 @@
+<button class="btn btn-primary js-select-single-item">Select single item</button>
+<button class="btn btn-primary js-select-multiple-items">Select multiple items</button>
+<button class="btn btn-primary js-select-single-media">Select single media</button>
+<button class="btn btn-primary js-select-multiple-media">Select multiple media</button>
+<div class="js-items"></div>
+<script>
+  function appStart(extension) {
+    var dialogButtonSingleItem = document.querySelector('.js-select-single-item');
+    var dialogButtonMultipleItems = document.querySelector('.js-select-multiple-items');
+    var dialogButtonSingleMedia = document.querySelector('.js-select-single-media');
+    var dialogButtonMultipleMedia = document.querySelector('.js-select-multiple-media');
+    var jsItems = document.querySelector('.js-items');
+    
+    dialogButtonSingleItem.addEventListener('click', function(e) {
+      extension.dialogs.selectSingleItem({itemTypes: ['blog-post']})
+        .then(function(res) {
+          console.log(res);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    });
+
+    dialogButtonMultipleItems.addEventListener('click', function(e) {
+      extension.dialogs.selectMultipleItems({itemTypes: ['start-page']})
+        .then(function(res) {
+          console.log(res);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    });
+
+    dialogButtonSingleMedia.addEventListener('click', function(e) {
+      extension.dialogs.selectSingleMedia()
+        .then(function(res) {
+          console.log(res);
+        })
+        .catch(function(err) {
+          console.log(err);
+        });
+    });
+
+    dialogButtonMultipleMedia.addEventListener('click', function(e) {
+      extension.dialogs.selectMultipleMedia()
+        .then(function(items) {
+          if (!items) return;
+          renderTemplate(items);
+          extension.field.setValue(items);
+        })
+    });
+
+    function renderTemplate(items) {
+      getMediaItems(items, function (items) {
+        var str = '';
+        str += '<div class="row app-content app-content--no-padding-left">';
+        items.data.map(function(item) {
+        str += '  <div class="col-xs-3 col-md-3">';
+        str += '    <a href="#" class="thumbnail">';
+        str += '      <img style="height: 100px;" src="' + item.attributes.file.url + '" alt="' + item.attributes.title + '"/>';
+        str += '    </a>';
+        str += '  </div>';
+        });
+        str += '</div>';     
+        jsItems.innerHTML = str;
+        extension.window.updateHeight();
+      });
+    }
+
+    function getMediaItems(items, cb) {
+      var ids = items.data.map(function(item) {
+        return item.id;
+      }).join();
+      extension.bucket.get('media', {'id[eq]': ids})
+        .then(function(items) {
+          cb(items);
+        })
+    }
+
+    var val = extension.field.getValue();
+    if (val) {
+      renderTemplate(extension.field.getValue());
+    }
+    extension.window.updateHeight();
+  }
+
+  twixly.extension.init({ enableDefault: ['*'] })
+    .then(appStart)
+    .catch(function (err) {
+      console.log(err);
+    });
+</script>

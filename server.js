@@ -18,7 +18,7 @@ app.use(session({
 // This is where all the magic happens!
 app.engine('html', swig.renderFile);
 app.set('view engine', 'html');
-app.set('views', __dirname + '/app');
+app.set('views', __dirname + '/extensions');
 
 // Swig will cache templates for you, but you can disable
 // that and use Express's caching instead, if you like:
@@ -43,7 +43,7 @@ var cacheFor = -1;
 
 app.use(routes);
 
-app.use(express.static( path.join( __dirname, 'app' ), { maxAge: cacheFor }));
+app.use(express.static( path.join( __dirname, 'extensions' ), { maxAge: cacheFor }));
 app.use(express.static( path.join( __dirname, 'dist' ), { maxAge: cacheFor }));
 
 // start the server

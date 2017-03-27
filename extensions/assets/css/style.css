@@ -1,0 +1,46 @@
+/* Extension dialog */
+.extension-dialog .btn-select-multiple-media {
+  margin-bottom: 15px;
+}
+.extension-dialog .items {
+  
+}
+.extension-dialog .well--items {
+  background-color: #FCFCFC;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
+}
+.extension-dialog .well--empty {
+  background-color: #fff;
+  margin-bottom: 0px;
+}
+.extension-dialog .well--empty .icon {
+  font-size: 80px;
+  margin-bottom: 15px;
+}
+.extension-dialog .well--empty .text {
+  font-size: 16px;
+}
+.extension-dialog .btn-group {
+  margin-bottom: -1px;
+  osition: absolute;
+  ight: 10px;
+  op: 0px;
+  isibility: hidden;
+}
+.extension-dialog .btn-group .btn {
+  order-bottom: none;
+}
+.extension-dialog .btn-group .btn:first-child {
+  border-radius: 4px 0 0 0;
+}
+.extension-dialog .btn-group .btn:last-child {
+  border-radius: 0 4px 0 0;
+}
+.extension-dialog .btn-group .btn-move {
+  cursor: move;
+}
+.extension-dialog .thumbnail {
+  border-radius: 0 4px 4px 4px;
+  position: relative;
+}

@@ -1,0 +1,120 @@
+<input type="text" name="slug" class="form-control">
+<script>
+  function appStart(extension) {
+    var formGroup = document.querySelector('body');
+    var slugField = document.querySelector('input');
+    var dialogButtonSingleItem = document.querySelector('.js-select-single-item');
+    var dialogButtonMultipleItems = document.querySelector('.js-select-multiple-items');
+    var dialogButtonSingleMedia = document.querySelector('.js-select-single-media');
+    var dialogButtonMultipleMedia = document.querySelector('.js-select-multiple-media');
+    var fieldValue = extension.field.getValue();
+    var prevTitleValue = slugify(extension.item.attributes.title.getValue());
+    
+    slugField.value = fieldValue ? fieldValue : '';
+    
+    extension.item.attributes.title.onChange(function (field) {
+      var value = slugify(field.value);
+      extension.field.setValue(value)
+        .then(function(field) {
+          if (slugField.value === prevTitleValue) {
+            slugField.value = value;
+          }
+          prevTitleValue = value;
+        })
+    });
+
+    extension.field.onChange(function (field) {
+      extension.field.setInvalid(false);
+      formGroup.className = '';
+      if (document.activeElement.name !== 'slug') {
+        if (field.errors && field.errors.length) {
+          formGroup.className = 'has-error';
+          extension.field.setInvalid(true);
+        }
+      }
+      extension.window.updateHeight();
+    });
+
+    slugField.addEventListener('blur', function(e) {
+      extension.field.setValue(e.target.value);
+    });
+    
+    slugField.addEventListener('keyup', function(e) {
+      extension.field.setValue(e.target.value)
+      if(e.keyCode === 13) {
+        extension.form.submit()
+      }
+    }, false); 
+    
+    function slugify(text, separator) {
+      separator = separator ?
+                  separator :
+                  '-';
+      return text.toString().toLowerCase()
+        .replace(/\s+/g, separator)     // Replace spaces with -
+        .replace(/å/g, 'a')             // For swedish
+        .replace(/ä/g, 'a')             // For swedish
+        .replace(/ö/g, 'o')             // For swedish
+        .replace(/Å/g, 'a')             // For swedish
+        .replace(/Ä/g, 'a')             // For swedish
+        .replace(/Ö/g, 'o')             // For swedish
+        .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+        .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+        .replace(/^-+/, '')             // Trim - from start of text
+        .replace(/-+$/, '');            // Trim - from end of text
+    }
+
+    // CRUD Test
+    // var item = {
+    //   type: 'items',
+    //   attributes: {
+    //     title: 'Test',
+    //     slug: 'test'
+    //   },
+    //   meta: {
+    //     item_type: {
+    //       data: {
+    //         type: 'item-types',
+    //         id: 'test-extension'
+    //       }
+    //     }
+    //   }
+    // };
+    // extension.bucket.post('items', { data: item })
+    //   .then(function(res) {
+    //     console.log(res);
+    //     extension.bucket.put('items/' + res.data.id, { data: res.data })
+    //       .then(function(res) {
+    //         console.log(res);
+    //         extension.bucket.delete('items/' + res.data.id)
+    //           .then(function(res) {
+    //             console.log(res);
+    //           })
+    //           .catch(function(err) {
+    //             console.log(err);
+    //           });
+    //       })
+    //       .catch(function(err) {
+    //         console.log(err);
+    //       });
+    //     extension.bucket.get('items', {item_type: 'test-extension'})
+    //       .then(function(items) {
+    //         console.log(items);
+    //       })
+    //       .catch(function(err) {
+    //         console.log(err);
+    //       });
+    //   })
+    //   .catch(function(err) {
+    //     console.log(err);
+    //   });
+    
+    extension.window.updateHeight();
+  }
+
+  twixly.extension.init({ enableDefault: ['*'] })
+    .then(appStart)
+    .catch(function (err) {
+      console.log(err);
+    });
+</script>

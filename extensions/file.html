@@ -1,0 +1,157 @@
+<div class="form-group js-form-group" style="isplay:none;">
+  <label class="control-label">File <span class="form-control-required js-form-control-required hide"> *</span></label>
+  <input type="text" name="file" class="form-control">
+  <div class="help-block elp-block--message js-error-message">
+    <span class="fa fa-warning"></span>
+    <span class="js-error-message-text">s</span>
+  </div>
+  <p class="help-block elp-block--description js-description-block hide">
+    <span class="fa fa-info-circle"></span>
+    <span class="js-description-text">s</span>
+  </p>
+</div>
+<div style="height: 400px;display: none;">
+  <nav class="navbar navbar--default" style="display: none;">
+    <div class="container-fluid" style="padding-right: 0;">
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#nav-1" aria-expanded="false">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="javascript:void(0);" data-default="true">Innehåll</a>
+      </div>
+      <div class="collapse navbar-collapse" id="nav-1">
+      </div>
+    </div>
+  </nav>
+  <aside class="app-sidebar js-list-view">
+    <div class="card card--pane">
+      <header class="card-header">
+        <h1 class="js-items-title"></h1>
+        <div class="pull-right">
+          <div class="btn-toolbar">
+            <button class="btn btn-primary btn--bulk hide js-btn-bulk">Ta bort</button>
+            <button class="btn btn-success btn--create-item js-create-item" type="button" data-toggle="tooltip" data-placement="right" title="Skapa&nbsp;ny&nbsp;bloggpost">
+              <span class="fa fa-plus"></span>
+            </button>
+            <button type="button" class="action-bar-toggle collapsed" data-toggle="collapse" data-target="#nav-2" aria-expanded="false">
+              <span class="sr-only">Toggle navigation</span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
+            </button>
+          </div>
+        </div>
+      </header>
+      <div class="js-items collapse action-bar-collapse" id="nav-2">
+      </div>
+    </div>  
+  </aside>
+  <main class="app-main">
+    <div class="card card--pane">
+      <header class="card-header hidden-xs">
+        <h1 class="js-item-title"></h1>
+      </header>  
+      <div class="card-block">
+        <div class="app-content js-item"></div>
+        <div class="app-content app-content--iframe js-item-iframe"></div>
+      </div>
+    </div>
+  </main>
+</div>
+<script>
+  function appStart(extension) {
+    setFieldValue(extension.field.getValue());
+    setEvents(extension);
+    renderTemplate(extension);
+    extension.window.updateHeight();
+  }
+
+  function setFieldValue(value) {
+    var input = document.querySelector('input');
+    input.value = value ? value : '';
+  }
+
+  function renderTemplate(extension) {
+    var fieldId = extension.field.id;
+    var fieldValue = extension.field.getValue();
+    var requiredText  = document.querySelector('.js-form-control-required ');
+    var descriptionBlock = document.querySelector('.js-description-block');
+    var descriptionText = document.querySelector('.js-description-text');
+    var input = document.querySelector('input');
+    if (extension.itemType.attributes.schema.properties[fieldId].description) {
+      descriptionBlock.className = 'help-block help-block--description js-description-block';
+      descriptionText.innerHTML = extension.itemType.attributes.schema.properties[fieldId].description;
+    }
+    if (extension.itemType.attributes.schema.required && ~extension.itemType.attributes.schema.required.indexOf(fieldId)) {
+      requiredText.className = 'form-control-required js-form-control-required';
+    }
+    if (
+      extension.itemType.attributes.ui_schema &&
+      extension.itemType.attributes.ui_schema[fieldId] &&
+      extension.itemType.attributes.ui_schema[fieldId]['ui:placeholder']
+    )
+    {
+       input.setAttribute('placeholder', extension.itemType.attributes.ui_schema[fieldId]['ui:placeholder']);
+    }
+  }
+
+  function setEvents(extension) {
+    var formGroup = document.querySelector('.js-form-group');
+    var errorMessageText = document.querySelector('.js-error-message-text');
+    var input = document.querySelector('input');
+    input.addEventListener('blur', function(e) {
+      extension.field.setValue(e.target.value)
+        .then(function(field) {
+          if (field.errors && field.errors.length) {
+            formGroup.className = 'form-group has-error';
+            errorMessageText.innerHTML = field.errors[0].detailed;
+          } else {
+            formGroup.className = 'form-group';
+          }
+          extension.window.updateHeight();
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+    });
+    extension.field.onChange(function (field) {
+      if (document.activeElement.name !== 'file') {
+        if (field.errors && field.errors.length) {
+          formGroup.className = 'form-group has-error';
+          errorMessageText.innerHTML = field.errors[0].detailed;
+        } else {
+          formGroup.className = 'form-group';
+        }
+        extension.window.updateHeight();
+      }
+    });
+    input.addEventListener('keyup', function(e) {
+      extension.field.setValue(e.target.value)
+        .then(function(field) {
+          // console.log(field);
+        })
+        .catch(function (err) {
+          console.log(err);
+        });
+      if(e.keyCode === 13) {
+        extension.form.submit()
+          .then(function(res) {
+            console.log('Value: ', extension.field.getValue());
+            console.log(res);
+          })
+          .catch(function (err) {
+            console.log(err);
+          });
+      }
+    }, false); 
+  }
+
+  twixly.extension.init({ disableDefault: ['label', 'description', 'errors'] })
+    .then(appStart)
+    .catch(function (err) {
+      console.log(err);
+    });
+</script>

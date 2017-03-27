@@ -10,14 +10,17 @@
     {% else %}
       <link rel="stylesheet" href="//localhost:8000/css/cms-uikit-0.1.0.css">
     {% endif %}
-  </head>
-  <body>
-    {% if process_env.NODE_ENV %}
+    <link rel="stylesheet" href="/assets/css/style.css">
+    {# {% if process_env.NODE_ENV %}
       <script src="//sdk.cloudpen.io/js/cms-uikit-0.1.0.js"></script>
     {% else %}
       <script>window.envLocal = true;</script>
       <script src="//localhost:8000/js/cms-uikit-0.1.0-dev.js"></script>
-    {% endif %}
+    {% endif %} #}
+    {# <link rel="stylesheet" href="/assets/css/twixly-extension.css"> #}
+    <script src="/assets/js/twixly-extension.js"></script>
+  </head>
+  <body class="clearfix extension-{{extension_name}} {% if extension_name === 'ile' %}app-navbar-fixed-top{% endif %}" style="height: auto;">
     {% set extension_template = extension_name + '.html' %}
     {% include extension_template %}
   </body>
