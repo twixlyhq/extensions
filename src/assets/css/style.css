@@ -1,4 +1,26 @@
+/* Extension todo */
+.extension-todo {
+  min-height: 34px;
+  overflow: hidden;
+}
+.extension-todo .input-group {
+  margin-bottom: 4px;
+}
+/*.extension-todo .input-group .form-control {
+  border-radius: 4px 0 0 0;
+}
+.extension-todo .input-group .btn {
+  border-radius: 0 4px 0 0;
+}
+.extension-todo .list-group .list-group-item:first-child {
+  border-radius: 0;
+}*/
+
 /* Extension dialog */
+.extension-dialog {
+  min-height: 238px;
+  overflow: hidden;
+}
 .extension-dialog .btn-select-multiple-media {
   margin-bottom: 15px;
 }

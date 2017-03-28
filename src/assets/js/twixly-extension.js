@@ -83,7 +83,7 @@ var twixlyField = {
 
 var itemUpdate = null;
 
-class Channel {
+class MessageChannel {
   constructor(sourceId) {
     this._responseHandlers = {};
 
@@ -94,7 +94,6 @@ class Channel {
     })
   }
 
-  // call method with name `method` exposed by twixly web app `window`
   call(method, params) {
     const messageId = this._send(method, params);
     return new Promise((resolve, reject) => {
@@ -249,7 +248,7 @@ var fieldId = getQueryString('field_id');
 
 // Functions
 function updateIframeHeight(height) {
-  var interval = 100;
+  var interval = 50;
   var timeout = 500;
   var theInterval = setInterval(function(){sendHeight(height);}, interval);
   setTimeout(function() { clearInterval(theInterval); }, timeout);
@@ -304,7 +303,7 @@ Extension.prototype.init = function(options) {
   // return promise;
 }
 
-var twixlyChannel = new Channel(iframeId);
+var twixlyChannel = new MessageChannel(iframeId);
 
 window.twixly = {};
 window.twixly.call = function(method, params) {

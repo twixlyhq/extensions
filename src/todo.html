@@ -1,0 +1,272 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
+<script src="https://npmcdn.com/react-sortable-hoc/dist/umd/react-sortable-hoc.min.js"></script>
+<div class="root"></div>
+<script>
+  function appStart(extension) {     
+    class Todo extends React.Component {
+      constructor(props) {
+        super(props);
+        this.validation = {
+          pattern: '/Gabriel/g',
+          message: 'En todo behöver ha namnet "Gabriel" i texten.'
+        };
+        this.handleKeyDown = this.handleKeyDown.bind(this);
+        this.handleBlur = this.handleBlur.bind(this);
+        this.handleChange = this.handleChange.bind(this);
+        this.deleteItem = this.deleteItem.bind(this);
+        this.addItem = this.addItem.bind(this);
+        this.descriptionBlock = this.descriptionBlock.bind(this);
+        this.errorBlock = this.errorBlock.bind(this);
+        this.onFormSubmit = this.onFormSubmit.bind(this);
+        this.state = { items: extension.field.getValue() || [], text: '', error: null, isValid: true };
+      }
+
+      onSortEnd({oldIndex, newIndex}) {
+        this.setState({
+          items: arrayMove(this.state.items, oldIndex, newIndex),
+          text: '',
+          error: null,
+          isValid: true
+        });
+        extension.field.setValue(this.state.items);
+      }
+
+      addItem(e) {
+        e.preventDefault();
+        if (!this.state.text) {
+          this.setState(prevState => ({
+            items: prevState.items,
+            text: '',
+            error: 'Du behöver ange ett värde.'
+          }));
+        } else {
+          var findItem = this.state.items.filter(function(item) {
+            return item.text === this.state.text;
+          }.bind(this));
+          if (findItem.length) {
+            this.setState(prevState => ({
+              items: prevState.items,
+              text: prevState.text,
+              error: 'Det finns redan ett item med den här texten. Var vänlig och skriv en annan text.'
+            }));
+          } else {
+            var newItem = {
+              text: this.state.text,
+              id: Date.now()
+            };
+            var items = this.state.items.concat(newItem);
+            extension.field.setValue(this.state.items);
+            this.setState(prevState => ({
+              items: items,
+              text: '',
+              error: null,
+              isValid: true
+            }));
+            // extension.field.validate()
+            //   .then(function (field) {
+            //     if (field.errors.length) {
+            //       extension.field.setInvalid(true);
+            //     }
+            //   });
+          }
+        }
+      }
+
+      deleteItem(e) {
+        var id = parseInt(e.target.id, 10);
+        var items = this.state.items.filter(function(item) {
+          return item.id !== id;
+        });
+        extension.field.setValue(this.state.items);
+        this.setState(prevState => ({
+          items: items,
+          text: '',
+          error: null,
+          isValid: extension.field.validate()
+        }));
+      }
+      
+      handleChange(e) {
+        this.setState({ text: e.target.value });
+      }
+
+      handleBlur(e) {
+        // extension.field.validate()
+        //   .then(function (field) {
+        //     this.setState(prevState => ({
+        //       items: prevState.items,
+        //       text: prevState.text,
+        //       error: null,
+        //       isValid: field.isValid
+        //     }));
+        //   }.bind(this));
+      }
+
+      onFormSubmit(isValid) {
+        // this.setState(prevState => ({
+        //   items: prevState.items,
+        //   text: prevState.text,
+        //   error: null,
+        //   isValid: extension.field.validate()
+        // }));
+      }
+
+      descriptionBlock(text) {
+        return (
+          React.createElement(
+          'div',
+          {className: 'help-block', style: {color: '#737373'}},
+            React.createElement(
+            'i',
+            {className: 'fa fa-info-circle'}),
+            React.createElement(
+            'span',
+            null,
+            ' ' + text
+            )
+          )
+        );
+      }
+
+      errorBlock(text) {
+        return (
+          React.createElement(
+          'div',
+          {className: 'help-block'},
+            React.createElement(
+            'i',
+            {className: 'fa fa-warning'}),
+            React.createElement(
+            'span',
+            null,
+            ' ' + text
+            )
+          )
+        );
+      }
+
+      handleKeyDown(e) {
+        if (e.keyCode === 13) {
+          this.addItem(e);
+          e.preventDefault();
+        }
+      }
+
+      render() {
+        return (
+          React.createElement(
+          'div',
+          {className: !this.state.isValid ? 'row bf-todo has-error' : 'row bf-todo'},
+            React.createElement(
+            'div',
+            {className: 'col-lg-12'},
+              React.createElement(
+              'div',
+              {
+                className: 'input-group'
+              },
+                React.createElement(
+                'input',
+                { className: 'form-control', placeholder: 'Lägg till en todo', onChange: this.handleChange, onKeyDown: this.handleKeyDown, onBlur: this.handleBlur, value: this.state.text, style: {orderRadius: '4px 0 0 0px'} }),
+                React.createElement(
+                'span',
+                {className: 'input-group-btn'},
+                  React.createElement(
+                  'button',
+                  { type: 'button', className: 'btn btn-default', onClick: this.addItem, style: !this.state.isValid ? {borderColor: '#a94442',boxShadow: 'inset 0 1px 1px rgba(0,0,0,0.075)'} : {} },
+                  'Lägg till #' + (this.state.items.length + 1)
+                  )
+                )
+              ),
+              !this.state.isValid ? this.errorBlock(this.validation.message) : false
+            ),
+            React.createElement(
+            'div',
+            {className: this.state.error ? 'col-lg-12 has-error' : 'col-lg-12'},
+              this.state.error ? this.errorBlock(this.state.error) : false,
+              this.state.items.length ? React.createElement(TodoList, { items: this.state.items, onSortEnd: this.onSortEnd.bind(this), useDragHandle: true, lockAxis: 'y', deleteItem: this.deleteItem.bind(this) }) : false,
+              extension.field.schema.description ? this.descriptionBlock(extension.field.schema.description) : false
+            )
+          )
+        );
+      }
+    }
+
+    var { SortableContainer, SortableElement, SortableHandle, arrayMove } = window.SortableHOC;
+    
+    const TodoList = SortableContainer(({items, deleteItem}) => {
+      return (
+        React.createElement(
+        'ul',
+        {
+          className: 'SortableList list-group'
+        },
+          items.map((value, index) => React.createElement(
+            TodoListItem,
+            {
+              key: `item-${index}`,
+              index: index,
+              item: value,
+              deleteItem: deleteItem
+            })
+          )
+        )
+      )
+    })
+
+    const TodoListItem = SortableElement(({item, deleteItem}) => 
+      React.createElement(
+        'li',
+        {
+          className: 'list-group-item',
+          style: {
+            margin: '-1px 0',
+            orderBottom: 'none'
+          }
+        },
+        React.createElement(
+        DragHandle,
+        null),
+        item.text,
+        React.createElement(
+        'a',
+        {
+          className: 'fa fa-remove pull-right ide',
+          style: { marginTop: 0, fontSize: '20px', cursor: 'pointer', color: '#a94442' },
+          id: item.id,
+          href:'#',
+          tabIndex: 0,
+          onClick: deleteItem
+        })
+      )
+    );
+    
+    const DragHandle = SortableHandle(() => React.createElement(
+      'span',
+      { 
+        className: 'fa fa-th',
+        style: {
+          cursor: 'move',
+          fontSize: '18px',
+          margin: '2px 10px 0 0',
+          position: 'relative',
+          top: '2px'
+        }
+      })
+    );
+
+    document.body.addEventListener('DOMSubtreeModified', function () {
+      extension.window.updateHeight();
+      // console.log('DOM Changed at ' + new Date());
+    }, false);
+
+    ReactDOM.render(React.createElement(Todo), document.querySelector('.root'));
+  }
+  
+  twixly.extension.init({ enableDefault: ['*'] })
+    .then(appStart)
+    .catch(function (err) {
+      console.log(err);
+    });
+</script>

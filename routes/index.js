@@ -8,8 +8,19 @@ router.use(function(req, res, next) {
   next();
 });
 
+/* Index */
+router.get('/', function(req, res) {
+  var model = {
+    title: 'Extensions - Index',
+    extension_name: 'default',
+    process_env,
+    req
+  };
+  res.render('index.html', model);
+});
+
 /* Extensions */
-router.get('/extensions/:extension', function(req, res) {
+router.get('/:extension', function(req, res) {
   var model = {
     title: 'Extensions - ' + req.params.extension,
     extension_name: req.params.extension,
