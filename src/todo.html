@@ -7,10 +7,7 @@
     class Todo extends React.Component {
       constructor(props) {
         super(props);
-        this.validation = {
-          pattern: '/Gabriel/g',
-          message: 'En todo behöver ha namnet "Gabriel" i texten.'
-        };
+        this.message = 'En todo behöver ha namnet "Gabriel" i texten.';
         this.handleKeyDown = this.handleKeyDown.bind(this);
         this.handleBlur = this.handleBlur.bind(this);
         this.handleChange = this.handleChange.bind(this);
@@ -18,8 +15,27 @@
         this.addItem = this.addItem.bind(this);
         this.descriptionBlock = this.descriptionBlock.bind(this);
         this.errorBlock = this.errorBlock.bind(this);
-        this.onFormSubmit = this.onFormSubmit.bind(this);
-        this.state = { items: extension.field.getValue() || [], text: '', error: null, isValid: true };
+        this.state = {
+          items: extension.field.getValue() || [],
+          text: '',
+          error: null,
+          isValid: true
+        };
+      }
+
+      componentDidMount() {
+        // var formGroup = document.querySelector('body');
+        extension.field.onValidate(function (field) {
+          extension.field.setInvalid(false);
+          // formGroup.className = '';
+          if (document.activeElement.name !== 'input_field') {
+            if (field.errors && field.errors.length) {
+              // formGroup.className = 'has-error';
+              extension.field.setInvalid(true);
+            }
+          }
+          extension.window.updateHeight();
+        });
       }
 
       onSortEnd({oldIndex, newIndex}) {
@@ -55,10 +71,10 @@
               text: this.state.text,
               id: Date.now()
             };
-            var items = this.state.items.concat(newItem);
+            this.state.items.splice(0, 0, newItem);
             extension.field.setValue(this.state.items);
             this.setState(prevState => ({
-              items: items,
+              items: this.state.items,
               text: '',
               error: null,
               isValid: true
@@ -88,29 +104,12 @@
       }
       
       handleChange(e) {
-        this.setState({ text: e.target.value });
+        this.setState({
+          text: e.target.value
+        });
       }
 
-      handleBlur(e) {
-        // extension.field.validate()
-        //   .then(function (field) {
-        //     this.setState(prevState => ({
-        //       items: prevState.items,
-        //       text: prevState.text,
-        //       error: null,
-        //       isValid: field.isValid
-        //     }));
-        //   }.bind(this));
-      }
-
-      onFormSubmit(isValid) {
-        // this.setState(prevState => ({
-        //   items: prevState.items,
-        //   text: prevState.text,
-        //   error: null,
-        //   isValid: extension.field.validate()
-        // }));
-      }
+      handleBlur(e) {}
 
       descriptionBlock(text) {
         return (
@@ -168,7 +167,7 @@
               },
                 React.createElement(
                 'input',
-                { className: 'form-control', placeholder: 'Lägg till en todo', onChange: this.handleChange, onKeyDown: this.handleKeyDown, onBlur: this.handleBlur, value: this.state.text, style: {orderRadius: '4px 0 0 0px'} }),
+                { className: 'form-control', name: 'input_field', placeholder: 'Lägg till en todo', onChange: this.handleChange, onKeyDown: this.handleKeyDown, onBlur: this.handleBlur, value: this.state.text, style: {orderRadius: '4px 0 0 0px'} }),
                 React.createElement(
                 'span',
                 {className: 'input-group-btn'},
@@ -179,7 +178,7 @@
                   )
                 )
               ),
-              !this.state.isValid ? this.errorBlock(this.validation.message) : false
+              !this.state.isValid ? this.errorBlock(this.message) : false
             ),
             React.createElement(
             'div',

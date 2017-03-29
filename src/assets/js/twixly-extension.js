@@ -8,21 +8,22 @@ var twixlyExtension = {
     id: null,
     // type: null,
     schema: null,
+    ui_schema: null,
     // value: null,
     getValue: function () {
       return twixlyField.value;
     },
     setValue: function (value) {
-      return twixlyChannel.call('extension_field_set_value', {field_id: twixlyField.id, type: twixlyExtension.field.schema.type, value: value});
+      return postMessenger.call('extension_field_set_value', {field_id: twixlyField.id, type: twixlyExtension.field.schema.type, value: value});
     },
     setInvalid: function (value) {
-      return twixlyChannel.call('extension_field_set_invalid', {field_id: twixlyField.id, value: value});
+      return postMessenger.call('extension_field_set_invalid', {field_id: twixlyField.id, value: value});
     },
     validate: function (value) {
-      return twixlyChannel.call('extension_field_validate', {field_id: twixlyField.id});
+      return postMessenger.call('extension_field_validate', {field_id: twixlyField.id});
     },
     // removeValue: function () {
-    //   return twixlyChannel.call('extension_field_remove_value', {field_id: twixlyField.id});
+    //   return postMessenger.call('extension_field_remove_value', {field_id: twixlyField.id});
     // },
     onChange: function (cb, runInitValueChanged) {
       if (runInitValueChanged && twixlyFieldEvents.changeInitValue) {
@@ -38,41 +39,54 @@ var twixlyExtension = {
       twixlyFieldEvents.validationInitValue = null;
       twixlyFieldEvents.validation = cb;
     }
+    // onFocus: function (cb) {
+    //   // if (twixlyFieldEvents.focusInitValue) {
+    //   //   cb(twixlyFieldEvents.focusInitValue);
+    //   // }
+    //   twixlyFieldEvents.focusInitValue = null;
+    //   twixlyFieldEvents.focus = cb;
+    // }
   },
   form: {
     submit: function () {
-      return twixlyChannel.call('extension_form_submit');
+      return postMessenger.call('extension_form_submit');
     }
   },
   itemType: null,
   item: null,
   bucket: {
     get: function (endPoint, options) {
-      return twixlyChannel.call('extension_bucket_get', {endPoint: endPoint, options: options});
+      return postMessenger.call('extension_bucket_get', {endPoint: endPoint, options: options});
     },
     post: function (endPoint, data) {
-      return twixlyChannel.call('extension_bucket_post', {endPoint: endPoint, data: data});
+      return postMessenger.call('extension_bucket_post', {endPoint: endPoint, data: data});
     },
     put: function (endPoint, data) {
-      return twixlyChannel.call('extension_bucket_put', {endPoint: endPoint, data: data});
+      return postMessenger.call('extension_bucket_put', {endPoint: endPoint, data: data});
     },
     delete: function (endPoint) {
-      return twixlyChannel.call('extension_bucket_delete', {endPoint: endPoint});
+      return postMessenger.call('extension_bucket_delete', {endPoint: endPoint});
     }
   },
   dialogs: {
     selectSingleItem: function (options) {
-      return twixlyChannel.call('extension_dialogs_select_single_item', {options});
+      return postMessenger.call('extension_dialogs_select_single_item', {options});
     },
     selectMultipleItems: function (options) {
-      return twixlyChannel.call('extension_dialogs_select_multiple_items', {options});
+      return postMessenger.call('extension_dialogs_select_multiple_items', {options});
     },
     selectSingleMedia: function (options) {
-      return twixlyChannel.call('extension_dialogs_select_single_media', {options});
+      return postMessenger.call('extension_dialogs_select_single_media', {options});
     },
     selectMultipleMedia: function (options) {
-      return twixlyChannel.call('extension_dialogs_select_multiple_media', {options});
-    }
+      return postMessenger.call('extension_dialogs_select_multiple_media', {options});
+    },
+    editItem: function (itemId, options) {
+      return postMessenger.call('extension_dialogs_edit_item', {itemId: itemId, options: options});
+    },
+    editMediaItem: function (itemId, options) {
+      return postMessenger.call('extension_dialogs_edit_media_item', {itemId: itemId, options: options});
+    },
   }
 };
 
@@ -83,29 +97,29 @@ var twixlyField = {
 
 var itemUpdate = null;
 
-class MessageChannel {
-  constructor(sourceId) {
+class PostMessenger {
+  constructor(iframeId) {
     this._responseHandlers = {};
 
-    this._send = createSender(sourceId);
+    this._dispatch = setPostMessage(iframeId);
 
     window.addEventListener('message', (event) => {
-      this._handleMessage(event.data);
+      this._onMessage(event.data);
     })
   }
 
   call(method, params) {
-    const messageId = this._send(method, params);
+    const msgId = this._dispatch(method, params);
     return new Promise((resolve, reject) => {
-      this._responseHandlers[messageId] = {resolve, reject}
+      this._responseHandlers[msgId] = {resolve, reject}
     })
   }
 
-  send(method, params) {
+  dispatch(method, params) {
     this._send(method, params)
   }
 
-  _handleMessage(message) {
+  _onMessage(message) {
     if (message.method === 'external_field') {
       if (itemUpdate) {
         itemUpdate.attributes[message.data.id].value = message.data.value;
@@ -131,6 +145,11 @@ class MessageChannel {
           twixlyFieldEvents.validation(message.data);
         }
       }
+      // if ((message.method === 'extension_field_check_focus')) {
+      //   if (twixlyFieldEvents.focus) {
+      //     twixlyFieldEvents.focus(message.data);
+      //   }
+      // }
     }
     if (message.id >= 0) {
       var id = message.id;
@@ -143,6 +162,7 @@ class MessageChannel {
         // twixlyExtension.field.value = message.data.value;
         twixlyField.id = message.data.id;
         twixlyExtension.field.schema = message.data.schema;
+        twixlyExtension.field.ui_schema = message.data.ui_schema;
         twixlyExtension.field.id = message.data.name;
         twixlyExtension.itemType = message.data.item_type;
         itemUpdate = JSON.parse(JSON.stringify(message.data.item));
@@ -154,7 +174,7 @@ class MessageChannel {
               return itemUpdate.attributes[this.id].value;
             }
             prop.setValue = function(value) {
-              return twixlyChannel.call('extension_item_attributes_set_value', {field_id: this.id, value: value});
+              return postMessenger.call('extension_item_attributes_set_value', {field_id: this.id, value: value});
             }
             prop.onChange = function(cb) {
               twixlyFieldEvents.item.attributes[this.id] = {
@@ -177,7 +197,10 @@ class MessageChannel {
         };
         twixlyFieldEvents.changeInitValue = initValue;
         twixlyFieldEvents.validationInitValue = initValue;
+        // twixlyFieldEvents.focusInitValue = initValue;
         responseHandler.resolve(twixlyExtension);
+        // Check if parent field is focused
+        // postMessenger.call('extension_field_check_focus', {field_id: twixlyField.id});
       } else if (message.method.startsWith('extension_bucket_')) {
         if (message.data.errors) {
           responseHandler.reject(message.data.errors);
@@ -189,6 +212,12 @@ class MessageChannel {
           responseHandler.reject(message.data.errors);
         } else {
           responseHandler.resolve(message.data.res);  
+        }
+      } else if (message.method.startsWith('extension_dialogs_edit_')) {
+        if (message.data.errors) {
+          responseHandler.reject(message.data.errors);
+        } else {
+          responseHandler.resolve(message.data.res);
         }
       } else if (message.data) {
         if (message.data && typeof message.data.value !== 'undefined') {
@@ -204,29 +233,31 @@ class MessageChannel {
   } 
 }
 
-function createSender (sourceId) {
-  let messageCount = 0
-  return function send (method, params) {
+function setPostMessage (iframeId) {
+  let msgCount = 0
+  return function dispatch (method, params) {
     // params = params ?
     //          params : 
     //          {};
     // params.field_id = twixlyField.id;
-    const messageId = messageCount++
+    const msgId = msgCount++
     parent.postMessage({
-      sourceId: sourceId,
-      id: messageId,
+      iframeId: iframeId,
+      id: msgId,
       method,
       params
     }, '*');
-    return messageId
+    return msgId
   }
 }
 
 var twixlyFieldEvents = {
   onChange: null,
   onValidate: null,
+  // onFocus: null,
   changeInitValue: null,
   validationInitValue: null,
+  // focusInitValue: null,
   item: {
     attributes: {}
   }
@@ -274,12 +305,12 @@ Extension.prototype.init = function(options) {
               {};
     options.height = options.height || document.body.offsetHeight;
     // if (!options && options.disableDefault) {
-    //   twixlyChannel.call('extension_field_disable_default', {field_id: twixlyField.id, value: options.disableDefault});
+    //   postMessenger.call('extension_field_disable_default', {field_id: twixlyField.id, value: options.disableDefault});
     // }
-    return twixlyChannel.call('extension_init', {field_id: fieldId, options: options});
+    return postMessenger.call('extension_init', {field_id: fieldId, options: options});
     // function callback() {
     //   // if (options && options.disableDefault) {
-    //   //   twixlyChannel.call('extension_field_disable_default', {field_id: twixlyField.id, value: options.disableDefault});
+    //   //   postMessenger.call('extension_field_disable_default', {field_id: twixlyField.id, value: options.disableDefault});
     //   // }
     //   resolve(twixlyExtension);
     // }
@@ -303,10 +334,10 @@ Extension.prototype.init = function(options) {
   // return promise;
 }
 
-var twixlyChannel = new MessageChannel(iframeId);
+var postMessenger = new PostMessenger(iframeId);
 
 window.twixly = {};
 window.twixly.call = function(method, params) {
-  return twixlyChannel.call(method, params);
+  return postMessenger.call(method, params);
 }
 window.twixly.extension = new Extension;
