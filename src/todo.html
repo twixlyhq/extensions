@@ -13,8 +13,10 @@
         this.handleChange = this.handleChange.bind(this);
         this.deleteItem = this.deleteItem.bind(this);
         this.addItem = this.addItem.bind(this);
+        this.setOnBodyResizeEvent = this.setOnBodyResizeEvent.bind(this);
         this.descriptionBlock = this.descriptionBlock.bind(this);
         this.errorBlock = this.errorBlock.bind(this);
+        this.isSorting = false;
         this.state = {
           items: extension.field.getValue() || [],
           text: '',
@@ -24,6 +26,7 @@
       }
 
       componentDidMount() {
+        this.setOnBodyResizeEvent();
         // var formGroup = document.querySelector('body');
         extension.field.onValidate(function (field) {
           extension.field.setInvalid(false);
@@ -34,8 +37,20 @@
               extension.field.setInvalid(true);
             }
           }
-          extension.window.updateHeight();
         });
+        extension.window.updateHeight();
+      }
+
+      shouldCancelStart({oldIndex, newIndex}) {
+        this.isSorting = true;
+      }
+
+      onSortMove({oldIndex, newIndex}) {
+        
+      }
+
+      onSortStart({oldIndex, newIndex}) {
+        
       }
 
       onSortEnd({oldIndex, newIndex}) {
@@ -46,6 +61,7 @@
           isValid: true
         });
         extension.field.setValue(this.state.items);
+        this.isSorting = false;
       }
 
       addItem(e) {
@@ -87,6 +103,14 @@
             //   });
           }
         }
+      }
+
+      setOnBodyResizeEvent() {
+        document.body.addEventListener('DOMSubtreeModified', function (e) {
+          if (this.isSorting) return;
+          extension.window.updateHeight();
+          // console.log('DOM Changed at ' + new Date());
+        }.bind(this), false);
       }
 
       deleteItem(e) {
@@ -184,7 +208,7 @@
             'div',
             {className: this.state.error ? 'col-lg-12 has-error' : 'col-lg-12'},
               this.state.error ? this.errorBlock(this.state.error) : false,
-              this.state.items.length ? React.createElement(TodoList, { items: this.state.items, onSortEnd: this.onSortEnd.bind(this), useDragHandle: true, lockAxis: 'y', deleteItem: this.deleteItem.bind(this) }) : false,
+              this.state.items.length ? React.createElement(TodoList, { items: this.state.items, pressDelay: 0, shouldCancelStart: this.shouldCancelStart.bind(this), onSortMove: this.onSortMove.bind(this), onSortStart: this.onSortStart.bind(this), onSortEnd: this.onSortEnd.bind(this), useDragHandle: true, lockAxis: 'y', deleteItem: this.deleteItem.bind(this) }) : false,
               extension.field.schema.description ? this.descriptionBlock(extension.field.schema.description) : false
             )
           )
@@ -254,11 +278,6 @@
         }
       })
     );
-
-    document.body.addEventListener('DOMSubtreeModified', function () {
-      extension.window.updateHeight();
-      // console.log('DOM Changed at ' + new Date());
-    }, false);
 
     ReactDOM.render(React.createElement(Todo), document.querySelector('.root'));
   }

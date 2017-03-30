@@ -52,8 +52,8 @@
           str += '      <button type="button" class="btn btn-default js-edit btn-edit">Edit</button>';
           str += '      <button type="button" class="btn btn-default js-remove btn-remove">Remove</button>';
           str += '    </div>';
-          str += '    <a href="#" class="thumbnail">';
-          str += '      <img class="js-edit-image" style="height: 120px;" src="' + item.attributes.file.url + '" alt="' + item.attributes.title + '"/>';
+          str += '    <a href="#" class="thumbnail js-edit-image">';
+          str += '      <img style="height: 120px;" src="' + item.attributes.file.url + '" alt="' + item.attributes.title + '"/>';
           str += '    </a>';
           str += '  </div>';
           });
@@ -77,11 +77,11 @@
 
     function setTemplateEvents() {
       var items = document.querySelectorAll('.js-items .js-item');
-      [].forEach.call(items, function(item) {
+      [].forEach.call(items, function(item, a) {
+        var id = item.getAttribute('data-id');
         var editButton = item.querySelector('.js-edit');
         var editImage = item.querySelector('.js-edit-image');
         var removeButton = item.querySelector('.js-remove');
-        var id = editButton.parentNode.parentNode.getAttribute('data-id');
         editButton.addEventListener('click', function (e) {
           editItem(id);
         }, false); 

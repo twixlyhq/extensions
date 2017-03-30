@@ -15,6 +15,9 @@
 .extension-todo .list-group .list-group-item:first-child {
   border-radius: 0;
 }*/
+.extension-todo .list-group {
+  overflow: hidden;
+}
 
 /* Extension dialog */
 .extension-dialog {
