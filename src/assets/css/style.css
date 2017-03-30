@@ -66,3 +66,14 @@
   border-radius: 0 4px 4px 4px;
   position: relative;
 }
+extension-dialog .js-sortable { list-style-type: none; margin: 0; padding: 0; idth: 450px;  }
+extension-dialog .js-sortable li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 90px; font-size: 4em; text-align: center; }
+.extension-dialog .js-sortable-placeholder {
+  background: #eaeaea;
+  border: solid 1px #d6d6d6;
+  border-radius: 4px;
+}
+extension-dialog .js-sortable-placeholder:before {
+  ontent: 'Dra och släpp';
+}
+extension-dialog .ui-sortable-helper { height: 100px; background: red; width: 100%; }

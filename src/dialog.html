@@ -14,8 +14,7 @@
     var dialogButtonMultipleMedia = document.querySelector('.js-select-multiple-media');
     var jsItems = document.querySelector('.js-items');
     var currentItems = extension.field.getValue() || { data : [] };
-    var itemTypeId = 'sub-page';
-
+    
     dialogButtonMultipleMedia.addEventListener('click', function(e) {
       extension.dialogs.selectMultipleMedia({itemTypes:['test-extension']})
         .then(function(items) {
@@ -40,26 +39,6 @@
       }
     }
 
-    // dialogButtonMultipleMedia.addEventListener('click', function(e) {
-    //   extension.dialogs.selectMultipleItems({itemTypes:['blog-post']})
-    //     .then(function(items) {
-    //       if (!items) return;
-    //       currentItems.data = currentItems.data.concat(items.data);
-    //       renderTemplate(currentItems);
-    //       extension.field.setValue(currentItems);
-    //     })
-    // });
-
-    // dialogButtonMultipleMedia.addEventListener('click', function(e) {
-    //   extension.dialogs.selectSingleItem({itemTypes:['blog-post']})
-    //     .then(function(items) {
-    //       if (!items) return;
-    //       currentItems.data = currentItems.data.concat(items.data);
-    //       renderTemplate(currentItems);
-    //       extension.field.setValue(currentItems);
-    //     })
-    // });
-
     function renderTemplate(items) {
       var str = '';
       if (items.data.length) {
@@ -67,7 +46,7 @@
           str += '<div class="well well--items">';
           str += '<div class="row js-sortable">';
           items.data.map(function(item) {
-          str += '  <div class="js-item item col-xs-6 col-sm-4 col-md-3 col-lg-2" data-id="' + item.id + '">';
+          str += '  <div class="js-item item col-xs-6 col-sm-6 col-md-3 col-lg-2" data-id="' + item.id + '">';
           str += '    <div class="btn-group" role="group">';
           str += '      <div type="button" class="btn btn-default js-move btn-move">Move</div>';
           str += '      <button type="button" class="btn btn-default js-edit btn-edit">Edit</button>';
@@ -118,8 +97,9 @@
         handle: '.js-move',
         containment: 'parent',
         placeholder: 'js-sortable-placeholder',
+        tolerance: 'pointer',
         start: function(event, ui) {
-          ui.placeholder.addClass('js-item item col-xs-6 col-sm-4 col-md-3 col-lg-2');
+          ui.placeholder.addClass('col-xs-6 col-sm-4 col-md-3 col-lg-2');
           ui.placeholder.css('margin', '0 10px 20px 10px');         
           ui.placeholder.css('width', ui.item[0].offsetWidth - 20 + 'px');
           ui.placeholder.css('height', ui.item[0].offsetHeight - 20 + 'px');
@@ -167,9 +147,3 @@
       console.log(err);
     });
 </script>
-<style>
-js-sortable { list-style-type: none; margin: 0; padding: 0; idth: 450px;  }
-js-sortable li { margin: 3px 3px 3px 0; padding: 1px; float: left; width: 100px; height: 90px; font-size: 4em; text-align: center; }
-.js-sortable-placeholder { background: #eaeaea; border: solid 1px #d6d6d6; }
-ui-sortable-helper { height: 100px; background: red; width: 100%; }
-</style>
