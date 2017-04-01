@@ -1,22 +1,14 @@
-# Extensions ready to use
+# Use these extensions in the Twixly Management App
 
 This document describes the extensions that is availeable to be used in the Twixly Management App.
 
 ## Table of Contents
 
-- [Inclusion into your project](#inclusion-in-your-project)
-- [Initialization](#initialization)
-- [`extension.itemType`](#extensionitemType)
-- [`extension.field`](#extensionfield)
-- [`extension.item`](#extensionitem)
-  - [`item.fields[id]`](#itemfieldsid-field)
-- [`extension.bucket`](#extensionbucket)
-  - [Item types](#content-types)
-  - [Items](#items)
-  - [Assets](#assets)
-- [`extension.locales`](#extensionlocales)
-- [`extension.window`](#extensionwindow)
-- [`extension.dialogs`](#extensiondialogs)
+- [Title](#title)
+- [Slug](#slug)
+- [ToDo](#todo)
+- [JSON Schema](#json-schema)
+- [Markdown Editor](#markdown-editor)
 
 ## Inclusion in your project
 
