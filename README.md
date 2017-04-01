@@ -26,19 +26,19 @@ You will need to include the
 library in your HTML5 app:
 
 ```html
-<script src="https://unpkg.com/contentful-ui-extensions-sdk@2"></script>
+<script src="https://unpkg.com/twixly-ui-extensions-sdk"></script>
 ```
 
 The SDK is also distributed as an [NPM package][package].
 
 ```bash
-npm install --save contentful-ui-extensions-sdk
+npm install --save twixly-ui-extensions-sdk
 ```
 
 You can include it in your code base with
 
 ```javascript
-var contentfulExtension = require('contentful-ui-extensions-sdk')
+var twixlyExtension = require('twixly-ui-extensions-sdk')
 ```
 
 ## Initialization
