@@ -43,7 +43,7 @@ var twixlyExtension = require('twixly-extensions-sdk')
 
 ## Initialization
 
-The SDK exposes the `twixlyExtension.init()` method. This is the main item
+The SDK exposes the `twixlyExtension.init()` method. This is the main entry
 point for all extension related code. If you require the script from the web
 without any module system the item point is available as
 
