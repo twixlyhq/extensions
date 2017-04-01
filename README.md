@@ -68,7 +68,7 @@ twixlyExtension.init(function (extension) {
 
 This API gives you access to data about the item type and the item. It has
 the form as described under "item type properties" in our [api
-documentation](https://www.twixly.com/developers/docs/references/content-management-api/#/reference/content-types).
+documentation](https://www.cloudpen.io/item-types.html).
 
 _Since 1.0.0_
 
