@@ -128,15 +128,6 @@ event (e.g. when multiple editors are working on the same item) or when
 
 The method returns a function you can call to stop listening to changes.
 
-_Changed in v3.0.0_
-
-### `extension.field.onIsDisabledChanged(cb): function`
-
-Calls the callback when the disabled status of the field changes. A boolean
-indicating whether the field is disabled or not is passed to the callback.
-
-The method returns a function that you can call to stop listening to changes.
-
 ### `extension.field.onSchemaErrorsChanged(cb): function`
 
 Calls the callback immediately with the current validation errors and whenever
@@ -147,8 +138,6 @@ The errors are updated when the app validates an item. This happens when
 loading an item or when the user tries to publish it.
 
 The method returns a function that you can call to stop listening to changes.
-
-_Since v2.1.0_
 
 ### `extension.field.id: string`
 
@@ -172,8 +161,6 @@ A list of validations for this field that are defined in the item type. The
 [item type
 documentation](https://www.twixly.com/developers/docs/references/content-management-api/#/reference/content-types/content-type/create/update-a-content-type)
 provides more information on the shape of validations.
-
-_Since v2.1.0_
 
 ## `extension.item`
 
@@ -209,7 +196,6 @@ exception.
 - `field.setValue(value, locale?): Promise<void>`
 - `field.removeValue(locale?): Promise<void>`
 - `field.onChange(locale?, cb): function`
-- `field.onIsDisabledChanged(locale?, cb): function`
 
 #### Example
 
@@ -328,8 +314,6 @@ dialogs.selectSingleitem({
 }).then((selecteditem) => {})
 ```
 
-_Since v3.1.0_
-
 ### dialogs.selectMultipleitems(options)
 
 Works similarly to `selectSingleitem`, but allows to select multiple items
@@ -350,21 +334,15 @@ dialogs.selectMultipleitems({min: 1, max: 3})
 .then((arrayOfSelecteditems) => {})
 ```
 
-_Since v3.1.0_
-
 ### `dialogs.selectSingleAsset(options)`
 
 Counterpart of `selectSingleitem` for assets. A `itemTypes` option is not
 available.
 
-_Since v3.1.0_
-
 ### `dialogs.selectMultipleAssets(options)`
 
 Counterpart of `selectMultipleitems` for assets. A `itemTypes` option is
 not available.
-
-_Since v3.1.0_
 
 [browserify]: http://browserify.org/
 [cma-js]: https://github.com/twixly/twixly-management.js/tree/legacy
