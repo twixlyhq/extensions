@@ -22,7 +22,7 @@ with the Twixly Management App.
 ## Inclusion in your project
 
 You will need to include the
-[contentful-extension-sdk](https://github.com/contentful/ui-extensions-sdk)
+[twixly-extension-sdk](https://github.com/twixlyhq/extensions)
 library in your HTML5 app:
 
 ```html
