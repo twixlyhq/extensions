@@ -7,11 +7,11 @@ with the Twixly Management App.
 
 - [Inclusion into your project](#inclusion-in-your-project)
 - [Initialization](#initialization)
-- [`extension.contentType`](#extensioncontenttype)
+- [`extension.itemType`](#extensionitemType)
 - [`extension.field`](#extensionfield)
 - [`extension.entry`](#extensionentry)
   - [`entry.fields[id]`](#entryfieldsid-field)
-- [`extension.space`](#extensionspace)
+- [`extension.bucket`](#extensionbucket)
   - [Content Types](#content-types)
   - [Entries](#entries)
   - [Assets](#assets)
@@ -64,7 +64,7 @@ twixlyExtension.init(function (extension) {
 })
 ```
 
-## `extension.contentType`
+## `extension.itemType`
 
 This API gives you access to data about the content type and the entry. It has
 the form as described under "content type properties" in our [api
@@ -105,9 +105,9 @@ Gets the current value of the field and locale. In the example this would yield
 
 ### `extension.field.setValue(value): Promise<void>`
 
-Sets the value for the field and locale. The promise is resolved when the change
+Sets the value for the field. The promise is resolved when the change
 has been acknowledged. The type of the value must match the expected field type.
-For example, if the extension is attached to a "Symbol" field you must pass a
+For example, if the extension is attached to a "String" field you must pass a
 string.
 
 ### `extension.field.removeValue(value): Promise<void>`
@@ -120,7 +120,7 @@ for the field would yield `undefined`.
 Communicates to the twixly web application if the field is in a valid state
 or not. This impacts the styling applied to the field container.
 
-### `extension.field.onValueChanged(cb): function`
+### `extension.field.onChange(cb): function`
 
 Calls the callback every time the value of the field is changed by an external
 event (e.g. when multiple editors are working on the same entry) or when
@@ -199,7 +199,7 @@ referenced by their ID.
 
 The `Field` API methods provide a similar interface to `extension.field`. The
 methods also accept an optional locale to change the value for a specific
-locale. It defaults to the space the space's default locale (see
+locale. It defaults to the bucket the bucket's default locale (see
 [`extension.locales`](#extensionlocales)). Providing an unknown locale throws an
 exception.
 
@@ -208,7 +208,7 @@ exception.
 - `field.getValue(locale?): mixed`
 - `field.setValue(value, locale?): Promise<void>`
 - `field.removeValue(locale?): Promise<void>`
-- `field.onValueChanged(locale?, cb): function`
+- `field.onChange(locale?, cb): function`
 - `field.onIsDisabledChanged(locale?, cb): function`
 
 #### Example
@@ -221,56 +221,56 @@ var oldTitle = titleField.getValue()
 titleField.setValue(oldTitle.toUpperCase())
 ```
 
-## `extension.space`
+## `extension.bucket`
 
-The `space` object exposes methods that allow the extension to read and
-manipulate a wide range of objects in the space. Its API mirrors `v0.8.x` of the
+The `bucket` object exposes methods that allow the extension to read and
+manipulate a wide range of objects in the bucket. Its API mirrors `v0.8.x` of the
 [`twixly-management` library][cma-js], with a few differences.
 
 ### Content Types
 
-Allows operating on the current space's content types. Content types
+Allows operating on the current bucket's content types. Content types
 created/updated or deleted this way will immediately be published or unpublished
 respectively.
 
-- `space.getContentType(id)`
-- `space.getContentTypes()`
-- `space.createContentType(data)`
-- `space.updateContentType(data)`
-- `space.deleteContentType(data)`
+- `bucket.getitemType(id)`
+- `bucket.getitemTypes()`
+- `bucket.createitemType(data)`
+- `bucket.updateitemType(data)`
+- `bucket.deleteitemType(data)`
 
 ### Entries
 
-- `space.getEntry(id)`
-- `space.getEntries(query)`
-- `space.createEntry(data)` The content type is expected in
-`data.sys.contentType`
-- `space.updateEntry(data)`
-- `space.publishEntry(data)`
-- `space.unpublishEntry(data)`
-- `space.archiveEntry(data)`
-- `space.unarchiveEntry(data)`
-- `space.deleteEntry(data)`
-- `space.getPublishedEntries(query)`
+- `bucket.getEntry(id)`
+- `bucket.getEntries(query)`
+- `bucket.createEntry(data)` The content type is expected in
+`data.sys.itemType`
+- `bucket.updateEntry(data)`
+- `bucket.publishEntry(data)`
+- `bucket.unpublishEntry(data)`
+- `bucket.archiveEntry(data)`
+- `bucket.unarchiveEntry(data)`
+- `bucket.deleteEntry(data)`
+- `bucket.getPublishedEntries(query)`
 
 ### Assets
 
 Same as the entry's method with "Entry" replaced by "Asset", with an additional
-`space.processAsset(asset, locale)`.
+`bucket.processAsset(asset, locale)`.
 
 ## `extension.locales`
 
-A space can have multiple locales and each localized entry field can have
+A bucket can have multiple locales and each localized entry field can have
 different values for different locales. Locales are identified by their locale
 code, e.g. `"en_US"`.
 
 ### `locales.default: string`
 
-The default locale for the current space.
+The default locale for the current bucket.
 
 ### `locales.available: Array<string>`
 
-A list of all locales available in the current space.
+A list of all locales available in the current bucket.
 
 ## `extension.window`
 
@@ -312,8 +312,8 @@ anything.
 are:
 
 - `locale`: The code of a locale you want to use to display proper titles and
-descriptions. Defaults to the space's default locale.
-- `contentTypes`: An array of content type IDs of entries that you want to
+descriptions. Defaults to the bucket's default locale.
+- `itemTypes`: An array of content type IDs of entries that you want to
 display in the selector. By default entries of all content types are displayed.
 
 ```javascript
@@ -324,7 +324,7 @@ dialogs.selectSingleEntry().then((selectedEntry) => {})
 // and display result in "de-DE" locale
 dialogs.selectSingleEntry({
   locale: 'de-DE',
-  contentTypes: ['blogpost']
+  itemTypes: ['blogpost']
 }).then((selectedEntry) => {})
 ```
 
@@ -335,7 +335,7 @@ _Since v3.1.0_
 Works similarly to `selectSingleEntry`, but allows to select multiple entries
 and the returned promise is resolved with an array of selected entries.
 
-Both `locale` and `contentTypes` options can be used. There are two additional
+Both `locale` and `itemTypes` options can be used. There are two additional
 options:
 
 - `min` and `max` - numeric values specifying an inclusive range in which the
@@ -354,14 +354,14 @@ _Since v3.1.0_
 
 ### `dialogs.selectSingleAsset(options)`
 
-Counterpart of `selectSingleEntry` for assets. A `contentTypes` option is not
+Counterpart of `selectSingleEntry` for assets. A `itemTypes` option is not
 available.
 
 _Since v3.1.0_
 
 ### `dialogs.selectMultipleAssets(options)`
 
-Counterpart of `selectMultipleEntries` for assets. A `contentTypes` option is
+Counterpart of `selectMultipleEntries` for assets. A `itemTypes` option is
 not available.
 
 _Since v3.1.0_
