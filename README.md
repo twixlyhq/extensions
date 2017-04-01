@@ -77,26 +77,21 @@ _Since 1.0.0_
 This API gives you access to the value and metadata of the field the extension
 is attached to.
 
-If you use localization, a extension instance will be rendered for each locale.
-This means you can only change the value for the given locale. See the
-[`item.fields` API](#itemfieldsid-field) for how to change values for
-different locales.
-
-If an item returned by the twixly Management API looks like the following:
+If an item returned by the twixly API looks like the following:
 
 ```javascript
 {
-  sys: { ... },
-  fields: {
-    title: {
-      "en_US": "My Post"
-    },
+  meta: { ... },
+  data: {
+    attributes: {
+      title: "My Post"
+    }
     ...
   }
 }
 ```
 
-Then the extension is attached to the `title` field and the `en_US` locale.
+Then the extension is attached to the `title` field.
 
 ### `extension.field.getValue(): mixed`
 
