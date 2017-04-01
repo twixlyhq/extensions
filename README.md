@@ -210,53 +210,21 @@ titleField.setValue(oldTitle.toUpperCase())
 ## `extension.bucket`
 
 The `bucket` object exposes methods that allow the extension to read and
-manipulate a wide range of objects in the bucket. Its API mirrors `v0.8.x` of the
-[`twixly-management` library][cma-js], with a few differences.
+manipulate a wide range of objects in the bucket.
 
-### item types
+### Item Types
+### items
+### Media
 
-Allows operating on the current bucket's item types. item types
+Allows operating on the current bucket's item types. Item types
 created/updated or deleted this way will immediately be published or unpublished
 respectively.
 
-- `bucket.getitemType(id)`
-- `bucket.getitemTypes()`
-- `bucket.createitemType(data)`
-- `bucket.updateitemType(data)`
-- `bucket.deleteitemType(data)`
-
-### items
-
-- `bucket.getitem(id)`
-- `bucket.getitems(query)`
-- `bucket.createitem(data)` The item type is expected in
-`data.sys.itemType`
-- `bucket.updateitem(data)`
-- `bucket.publishitem(data)`
-- `bucket.unpublishitem(data)`
-- `bucket.archiveitem(data)`
-- `bucket.unarchiveitem(data)`
-- `bucket.deleteitem(data)`
-- `bucket.getPublisheditems(query)`
-
-### Assets
-
-Same as the item's method with "item" replaced by "Asset", with an additional
-`bucket.processAsset(asset, locale)`.
-
-## `extension.locales`
-
-A bucket can have multiple locales and each localized item field can have
-different values for different locales. Locales are identified by their locale
-code, e.g. `"en_US"`.
-
-### `locales.default: string`
-
-The default locale for the current bucket.
-
-### `locales.available: Array<string>`
-
-A list of all locales available in the current bucket.
+- `bucket.get([item-type, item, media], options)`
+- `bucket.get([item-type, item, media]/[id], options)`
+- `bucket.post([item-type, item, media], data)`
+- `bucket.put([item-type, item, media], data)`
+- `bucket.delete(id)`
 
 ## `extension.window`
 
