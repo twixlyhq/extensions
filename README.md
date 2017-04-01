@@ -121,7 +121,7 @@ event (e.g. when multiple editors are working on the same item) or when
 
 The method returns a function you can call to stop listening to changes.
 
-### `extension.field.onSchemaErrorsChanged(cb): function`
+### `extension.field.onValidate(cb): function`
 
 Calls the callback immediately with the current validation errors and whenever
 the field is re-validated. The callback receives an array of error objects. An
@@ -137,39 +137,10 @@ The method returns a function that you can call to stop listening to changes.
 The ID of a field is defined in an item's item type. Yields `"title"` in the
 example.
 
-### `extension.field.locale: string`
-
-The current locale of a field the extension is attached to. Yields `"en_US"` in
-the example.
-
-### `extension.field.type: string`
-
-Holds the type of the field the extension is attached to. The field type can be
-one of those described [in our api
-documentation](https://www.twixly.com/developers/docs/references/content-management-api/#/reference/content-types).
-
-### `extension.field.validations: Validation[]`
-
-A list of validations for this field that are defined in the item type. The
-[item type
-documentation](https://www.twixly.com/developers/docs/references/content-management-api/#/reference/content-types/content-type/create/update-a-content-type)
-provides more information on the shape of validations.
-
 ## `extension.item`
 
 This object allows you to read and update the value of any field of the current
 item and to get the item's metadata.
-
-### `item.getSys(): object`
-
-Returns metadata for an item. The value coincides with the `sys` value of an
-item returned by the `v0.8.x` of the [twixly Management
-API](https://github.com/twixly/twixly-management.js/tree/legacy#item-properties).
-
-### `item.onSysChanged(cb): function`
-
-Calls the callback with metadata every time that metadata changes. You can call
-the returned function to stop listening to changes.
 
 ### `item.fields[id]: Field`
 
