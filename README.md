@@ -9,10 +9,10 @@ with the Twixly Management App.
 - [Initialization](#initialization)
 - [`extension.itemType`](#extensionitemType)
 - [`extension.field`](#extensionfield)
-- [`extension.entry`](#extensionentry)
-  - [`entry.fields[id]`](#entryfieldsid-field)
+- [`extension.item`](#extensionitem)
+  - [`item.fields[id]`](#itemfieldsid-field)
 - [`extension.bucket`](#extensionbucket)
-  - [Content Types](#content-types)
+  - [item types](#content-types)
   - [Entries](#entries)
   - [Assets](#assets)
 - [`extension.locales`](#extensionlocales)
@@ -43,9 +43,9 @@ var twixlyExtension = require('twixly-ui-extensions-sdk')
 
 ## Initialization
 
-The SDK exposes the `twixlyExtension.init()` method. This is the main entry
+The SDK exposes the `twixlyExtension.init()` method. This is the main item
 point for all extension related code. If you require the script from the web
-without any module system the entry point is available as
+without any module system the item point is available as
 
 ```javascript
 window.twixlyExtension.init(function (extension) {
@@ -66,8 +66,8 @@ twixlyExtension.init(function (extension) {
 
 ## `extension.itemType`
 
-This API gives you access to data about the content type and the entry. It has
-the form as described under "content type properties" in our [api
+This API gives you access to data about the item type and the item. It has
+the form as described under "item type properties" in our [api
 documentation](https://www.twixly.com/developers/docs/references/content-management-api/#/reference/content-types).
 
 _Since 1.0.0_
@@ -79,10 +79,10 @@ is attached to.
 
 If you use localization, a extension instance will be rendered for each locale.
 This means you can only change the value for the given locale. See the
-[`entry.fields` API](#entryfieldsid-field) for how to change values for
+[`item.fields` API](#itemfieldsid-field) for how to change values for
 different locales.
 
-If an entry returned by the twixly Management API looks like the following:
+If an item returned by the twixly Management API looks like the following:
 
 ```javascript
 {
@@ -123,7 +123,7 @@ or not. This impacts the styling applied to the field container.
 ### `extension.field.onChange(cb): function`
 
 Calls the callback every time the value of the field is changed by an external
-event (e.g. when multiple editors are working on the same entry) or when
+event (e.g. when multiple editors are working on the same item) or when
 `setValue()` is called.
 
 The method returns a function you can call to stop listening to changes.
@@ -143,8 +143,8 @@ Calls the callback immediately with the current validation errors and whenever
 the field is re-validated. The callback receives an array of error objects. An
 empty array indicates no errors.
 
-The errors are updated when the app validates an entry. This happens when
-loading an entry or when the user tries to publish it.
+The errors are updated when the app validates an item. This happens when
+loading an item or when the user tries to publish it.
 
 The method returns a function that you can call to stop listening to changes.
 
@@ -152,7 +152,7 @@ _Since v2.1.0_
 
 ### `extension.field.id: string`
 
-The ID of a field is defined in an entry's content type. Yields `"title"` in the
+The ID of a field is defined in an item's item type. Yields `"title"` in the
 example.
 
 ### `extension.field.locale: string`
@@ -168,33 +168,33 @@ documentation](https://www.twixly.com/developers/docs/references/content-managem
 
 ### `extension.field.validations: Validation[]`
 
-A list of validations for this field that are defined in the content type. The
-[content type
+A list of validations for this field that are defined in the item type. The
+[item type
 documentation](https://www.twixly.com/developers/docs/references/content-management-api/#/reference/content-types/content-type/create/update-a-content-type)
 provides more information on the shape of validations.
 
 _Since v2.1.0_
 
-## `extension.entry`
+## `extension.item`
 
 This object allows you to read and update the value of any field of the current
-entry and to get the entry's metadata.
+item and to get the item's metadata.
 
-### `entry.getSys(): object`
+### `item.getSys(): object`
 
-Returns metadata for an entry. The value coincides with the `sys` value of an
-entry returned by the `v0.8.x` of the [twixly Management
-API](https://github.com/twixly/twixly-management.js/tree/legacy#entry-properties).
+Returns metadata for an item. The value coincides with the `sys` value of an
+item returned by the `v0.8.x` of the [twixly Management
+API](https://github.com/twixly/twixly-management.js/tree/legacy#item-properties).
 
-### `entry.onSysChanged(cb): function`
+### `item.onSysChanged(cb): function`
 
 Calls the callback with metadata every time that metadata changes. You can call
 the returned function to stop listening to changes.
 
-### `entry.fields[id]: Field`
+### `item.fields[id]: Field`
 
 In addition to [`extension.field`](#extensionfield), a extension can also
-control the values of all other fields in the current entry. Fields are
+control the values of all other fields in the current item. Fields are
 referenced by their ID.
 
 The `Field` API methods provide a similar interface to `extension.field`. The
@@ -213,10 +213,10 @@ exception.
 
 #### Example
 
-If the entry has a "title" field, you can transform it to upper case with:
+If the item has a "title" field, you can transform it to upper case with:
 
 ```javascript
-var titleField = extension.entry.fields.title
+var titleField = extension.item.fields.title
 var oldTitle = titleField.getValue()
 titleField.setValue(oldTitle.toUpperCase())
 ```
@@ -227,9 +227,9 @@ The `bucket` object exposes methods that allow the extension to read and
 manipulate a wide range of objects in the bucket. Its API mirrors `v0.8.x` of the
 [`twixly-management` library][cma-js], with a few differences.
 
-### Content Types
+### item types
 
-Allows operating on the current bucket's content types. Content types
+Allows operating on the current bucket's item types. item types
 created/updated or deleted this way will immediately be published or unpublished
 respectively.
 
@@ -241,26 +241,26 @@ respectively.
 
 ### Entries
 
-- `bucket.getEntry(id)`
+- `bucket.getitem(id)`
 - `bucket.getEntries(query)`
-- `bucket.createEntry(data)` The content type is expected in
+- `bucket.createitem(data)` The item type is expected in
 `data.sys.itemType`
-- `bucket.updateEntry(data)`
-- `bucket.publishEntry(data)`
-- `bucket.unpublishEntry(data)`
-- `bucket.archiveEntry(data)`
-- `bucket.unarchiveEntry(data)`
-- `bucket.deleteEntry(data)`
+- `bucket.updateitem(data)`
+- `bucket.publishitem(data)`
+- `bucket.unpublishitem(data)`
+- `bucket.archiveitem(data)`
+- `bucket.unarchiveitem(data)`
+- `bucket.deleteitem(data)`
 - `bucket.getPublishedEntries(query)`
 
 ### Assets
 
-Same as the entry's method with "Entry" replaced by "Asset", with an additional
+Same as the item's method with "item" replaced by "Asset", with an additional
 `bucket.processAsset(asset, locale)`.
 
 ## `extension.locales`
 
-A bucket can have multiple locales and each localized entry field can have
+A bucket can have multiple locales and each localized item field can have
 different values for different locales. Locales are identified by their locale
 code, e.g. `"en_US"`.
 
@@ -302,9 +302,9 @@ Stops resizing the iframe automatically.
 
 This object provides methods for opening UI dialogs:
 
-### `dialogs.selectSingleEntry(options)`
+### `dialogs.selectSingleitem(options)`
 
-Opens a dialog for selecting a single entry. It returns a promise resolved with
+Opens a dialog for selecting a single item. It returns a promise resolved with
 the selected entity or `null` if a user closes the dialog without selecting
 anything.
 
@@ -313,26 +313,26 @@ are:
 
 - `locale`: The code of a locale you want to use to display proper titles and
 descriptions. Defaults to the bucket's default locale.
-- `itemTypes`: An array of content type IDs of entries that you want to
-display in the selector. By default entries of all content types are displayed.
+- `itemTypes`: An array of item type IDs of entries that you want to
+display in the selector. By default entries of all item types are displayed.
 
 ```javascript
-// display a dialog for selecting a single entry
-dialogs.selectSingleEntry().then((selectedEntry) => {})
+// display a dialog for selecting a single item
+dialogs.selectSingleitem().then((selecteditem) => {})
 
-// select a single entry of "blogpost" content type
+// select a single item of "blogpost" item type
 // and display result in "de-DE" locale
-dialogs.selectSingleEntry({
+dialogs.selectSingleitem({
   locale: 'de-DE',
   itemTypes: ['blogpost']
-}).then((selectedEntry) => {})
+}).then((selecteditem) => {})
 ```
 
 _Since v3.1.0_
 
 ### dialogs.selectMultipleEntries(options)
 
-Works similarly to `selectSingleEntry`, but allows to select multiple entries
+Works similarly to `selectSingleitem`, but allows to select multiple entries
 and the returned promise is resolved with an array of selected entries.
 
 Both `locale` and `itemTypes` options can be used. There are two additional
@@ -354,7 +354,7 @@ _Since v3.1.0_
 
 ### `dialogs.selectSingleAsset(options)`
 
-Counterpart of `selectSingleEntry` for assets. A `itemTypes` option is not
+Counterpart of `selectSingleitem` for assets. A `itemTypes` option is not
 available.
 
 _Since v3.1.0_
