@@ -5,11 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link rel="shortcut icon" href="/assets/icon-16.png"/>
-    {% if process_env.NODE_ENV %}
-      <link rel="stylesheet" href="//sdk.cloudpen.io/css/cms-uikit-0.1.0.css">
+    {% if extension_name === 'odo-vue' %}
+      <link rel="stylesheet" type="text/css" href="/assets/css/todo-vue.css">
+    {% elseif extension_name === 'json-schema' %}
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+      {# <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/paper/bootstrap.min.css">
+      <link rel="stylesheet" href="https://mozilla-services.github.io/react-jsonschema-form/styles.css"> #}
     {% else %}
-      <link rel="stylesheet" href="//localhost:8000/css/cms-uikit-0.1.0.css">
+      {% if process_env.NODE_ENV %}
+        <link rel="stylesheet" href="//sdk.cloudpen.io/css/cms-uikit-0.1.0.css">
+      {% else %}
+        <link rel="stylesheet" href="//localhost:8000/css/cms-uikit-0.1.0.css">
+      {% endif %}
     {% endif %}
+    <link rel="stylesheet" href="/assets/css/twixly-extension.css">
     <link rel="stylesheet" href="/assets/css/style.css">
     {# {% if process_env.NODE_ENV %}
       <script src="//sdk.cloudpen.io/js/cms-uikit-0.1.0.js"></script>

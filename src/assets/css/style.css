@@ -1,3 +1,37 @@
+/* Extension JSON Schema */
+.extension-json-schema {
+  background-color: #f1f1f1;
+  overflow: hidden;
+}
+.extension-json-schema form > .form-group {
+  margin: 0;
+}
+
+/* Extension Markdown Editor */
+.extension-markdown-editor {
+  min-height: 404px;
+  overflow: hidden;
+}
+
+/* Extension HTML Editor */
+.extension-html-editor textarea {
+  min-height: 600px;
+  overflow: hidden;
+}
+
+/* Extension todo vue */
+.extension-todo-vue {
+  background-color: #f1f1f1;
+  min-height: 235px;
+  overflow: hidden;
+}
+.extension-todo-vue .todoapp {
+  box-shadow: none;
+}
+.extension-todo-vue .footer {
+  height: 40px;
+}
+
 /* Extension todo */
 .extension-todo {
   min-height: 34px;

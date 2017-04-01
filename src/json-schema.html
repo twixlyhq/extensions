@@ -1,0 +1,63 @@
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/15.4.2/react-dom.min.js"></script>
+<script src="https://unpkg.com/react-jsonschema-form/dist/react-jsonschema-form.js"></script>
+<div class="root"></div>
+<script>
+  const { default: Form } = JSONSchemaForm;
+
+  function appStart(extension) {
+    class TwixlyForm extends React.Component {
+      constructor(props) {
+        super(props);
+        this.schema = extension.field.schema;
+        this.uiSchema = extension.field.ui_schema;
+        this.formData = extension.field.getValue();
+        this.onChange = this.onChange.bind(this);
+        this.onResize = this.onResize.bind(this);
+      }
+
+      componentDidMount() {
+        this.onResize();
+        extension.window.updateHeight();
+      }
+
+      componentDidUpdate() {
+        extension.window.updateHeight();
+      }
+
+      onResize() {
+        document.body.addEventListener('DOMSubtreeModified', function (e) {
+          extension.window.updateHeight();
+        }.bind(this), false);
+      }
+
+      onChange({ formData }) {
+        extension.field.setValue(formData);
+        console.log(formData);
+      }
+
+      render() {
+        return (
+          React.createElement(
+            Form, {
+              schema: this.schema,
+              uiSchema: this.uiSchema,
+              formData: this.formData,
+              onChange: this.onChange
+            },
+            React.createElement(
+            'button', {
+              type: 'submit',
+              style: {display: 'none' }
+            }))
+        );
+      }
+    }
+    ReactDOM.render(React.createElement(TwixlyForm), document.querySelector('.root'));
+  }
+  twixly.extension.init({ nableDefault: ['*'] })
+    .then(appStart)
+    .catch(function (err) {
+      console.log(err);
+    });
+</script>

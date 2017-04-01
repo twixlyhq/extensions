@@ -1,0 +1,60 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.css">
+<script src="https://cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"></script>
+<textarea id="demo2"># Intro
+Go ahead, play around with the editor! Be sure to check out **bold** and *italic* styling, or even [links](https://google.com). You can type the Markdown syntax, use the toolbar, or use shortcuts like `cmd-b` or `ctrl-b`.
+
+## Lists
+Unordered lists can be started using the toolbar or by typing `* `, `- `, or `+ `. Ordered lists can be started by typing `1. `.
+
+#### Unordered
+* Lists are a piece of cake
+* They even auto continue as you type
+* A double enter will end them
+* Tabs and shift-tabs work too
+
+#### Ordered
+1. Numbered lists...
+2. ...work too!
+
+## What about images?
+![Yes](https://i.imgur.com/sZlktY7.png)</textarea>
+<script>
+  function appStart(extension) {
+    var formGroup = document.querySelector('body');
+    var textarea = document.querySelector('#demo2');
+    
+    var simplemde = new SimpleMDE({
+      element: document.getElementById('demo2'),
+      spellChecker: false,
+      forceSync: true,
+      // autosave: {
+      //   enabled: true,
+      //   unique_id: 'demo2',
+      // },
+    });
+
+    if (extension.field.getValue()) {
+      simplemde.value(extension.field.getValue());
+    }
+
+    document.body.addEventListener('DOMSubtreeModified', function (e) {
+      extension.window.updateHeight();
+      // console.log('DOM Changed at ' + new Date());
+    }, false);
+
+    document.body.addEventListener('keyup', function (e) {
+      extension.field.setValue(simplemde.value());
+      // simplemde.value();
+      extension.window.updateHeight();
+      // console.log('DOM Changed at ' + new Date());
+    }, false);
+    
+    extension.window.updateHeight();
+  }
+
+  twixly.extension.init({ nableDefault: ['*'] })
+    .then(appStart)
+    .catch(function (err) {
+      console.log(err);
+    });
+</script>
