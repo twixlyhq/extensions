@@ -22,23 +22,23 @@ with the Twixly Management App.
 ## Inclusion in your project
 
 You will need to include the
-[twixly-extension-sdk](https://github.com/twixlyhq/extensions)
+[twixly-extensions-sdk](https://github.com/twixlyhq/ui-extensions-sdk)
 library in your HTML5 app:
 
 ```html
-<script src="https://unpkg.com/twixly-extensions"></script>
+<script src="https://unpkg.com/twixly-ui-extensions-sdk"></script>
 ```
 
 The SDK is also distributed as an [NPM package][package].
 
 ```bash
-npm install --save twixly-extensions
+npm install --save twixly-ui-extensions-sdk
 ```
 
 You can include it in your code base with
 
 ```javascript
-var twixlyExtension = require('twixly-ui-extensions-sdk')
+var twixlyExtension = require('twixly-extensions-sdk')
 ```
 
 ## Initialization
