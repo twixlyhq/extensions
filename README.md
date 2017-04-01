@@ -12,8 +12,8 @@ with the Twixly Management App.
 - [`extension.item`](#extensionitem)
   - [`item.fields[id]`](#itemfieldsid-field)
 - [`extension.bucket`](#extensionbucket)
-  - [item types](#content-types)
-  - [Entries](#entries)
+  - [Item types](#content-types)
+  - [Items](#items)
   - [Assets](#assets)
 - [`extension.locales`](#extensionlocales)
 - [`extension.window`](#extensionwindow)
@@ -239,10 +239,10 @@ respectively.
 - `bucket.updateitemType(data)`
 - `bucket.deleteitemType(data)`
 
-### Entries
+### items
 
 - `bucket.getitem(id)`
-- `bucket.getEntries(query)`
+- `bucket.getitems(query)`
 - `bucket.createitem(data)` The item type is expected in
 `data.sys.itemType`
 - `bucket.updateitem(data)`
@@ -251,7 +251,7 @@ respectively.
 - `bucket.archiveitem(data)`
 - `bucket.unarchiveitem(data)`
 - `bucket.deleteitem(data)`
-- `bucket.getPublishedEntries(query)`
+- `bucket.getPublisheditems(query)`
 
 ### Assets
 
@@ -313,8 +313,8 @@ are:
 
 - `locale`: The code of a locale you want to use to display proper titles and
 descriptions. Defaults to the bucket's default locale.
-- `itemTypes`: An array of item type IDs of entries that you want to
-display in the selector. By default entries of all item types are displayed.
+- `itemTypes`: An array of item type IDs of items that you want to
+display in the selector. By default items of all item types are displayed.
 
 ```javascript
 // display a dialog for selecting a single item
@@ -330,10 +330,10 @@ dialogs.selectSingleitem({
 
 _Since v3.1.0_
 
-### dialogs.selectMultipleEntries(options)
+### dialogs.selectMultipleitems(options)
 
-Works similarly to `selectSingleitem`, but allows to select multiple entries
-and the returned promise is resolved with an array of selected entries.
+Works similarly to `selectSingleitem`, but allows to select multiple items
+and the returned promise is resolved with an array of selected items.
 
 Both `locale` and `itemTypes` options can be used. There are two additional
 options:
@@ -342,12 +342,12 @@ options:
 number of selected entities must be contained
 
 ```javascript
-// display a dialog for selecting multiple entries
-dialogs.selectMultipleEntries().then((arrayOfSelectedEntries) => {})
+// display a dialog for selecting multiple items
+dialogs.selectMultipleitems().then((arrayOfSelecteditems) => {})
 
-// select between 1 and 3 (inclusive) entries
-dialogs.selectMultipleEntries({min: 1, max: 3})
-.then((arrayOfSelectedEntries) => {})
+// select between 1 and 3 (inclusive) items
+dialogs.selectMultipleitems({min: 1, max: 3})
+.then((arrayOfSelecteditems) => {})
 ```
 
 _Since v3.1.0_
@@ -361,7 +361,7 @@ _Since v3.1.0_
 
 ### `dialogs.selectMultipleAssets(options)`
 
-Counterpart of `selectMultipleEntries` for assets. A `itemTypes` option is
+Counterpart of `selectMultipleitems` for assets. A `itemTypes` option is
 not available.
 
 _Since v3.1.0_
