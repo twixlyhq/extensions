@@ -26,13 +26,13 @@ You will need to include the
 library in your HTML5 app:
 
 ```html
-<script src="https://unpkg.com/twixly-ui-extensions-sdk"></script>
+<script src="https://unpkg.com/twixly-extensions"></script>
 ```
 
 The SDK is also distributed as an [NPM package][package].
 
 ```bash
-npm install --save twixly-ui-extensions-sdk
+npm install --save twixly-extensions
 ```
 
 You can include it in your code base with
