@@ -1,7 +1,6 @@
-# Twixly UI Extensions API Reference
+# Extensions ready to use
 
-This document describes the API that an extension can use to communicate
-with the Twixly Management App.
+This document describes the extensions that is availeable to be used in the Twixly Management App.
 
 ## Table of Contents
 
