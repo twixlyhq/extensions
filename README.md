@@ -43,12 +43,12 @@ var twixlyExtension = require('twixly-ui-extensions-sdk')
 
 ## Initialization
 
-The SDK exposes the `contentfulExtension.init()` method. This is the main entry
+The SDK exposes the `twixlyExtension.init()` method. This is the main entry
 point for all extension related code. If you require the script from the web
 without any module system the entry point is available as
 
 ```javascript
-window.contentfulExtension.init(function (extension) {
+window.twixlyExtension.init(function (extension) {
   var value = extension.field.getValue()
   extension.field.setValue("Hello world!")
 })
@@ -58,8 +58,8 @@ If you use a CommonJS packager for the browser (e.g. [Browserify]) you need to
 require the Extensions SDK.
 
 ```javascript
-var contentfulExtension = require('contentful-ui-extensions-sdk')
-contentfulExtension.init(function (extension) {
+var twixlyExtension = require('twixly-ui-extensions-sdk')
+twixlyExtension.init(function (extension) {
   /* ... */
 })
 ```
@@ -68,7 +68,7 @@ contentfulExtension.init(function (extension) {
 
 This API gives you access to data about the content type and the entry. It has
 the form as described under "content type properties" in our [api
-documentation](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/content-types).
+documentation](https://www.twixly.com/developers/docs/references/content-management-api/#/reference/content-types).
 
 _Since 1.0.0_
 
@@ -82,7 +82,7 @@ This means you can only change the value for the given locale. See the
 [`entry.fields` API](#entryfieldsid-field) for how to change values for
 different locales.
 
-If an entry returned by the Contentful Management API looks like the following:
+If an entry returned by the twixly Management API looks like the following:
 
 ```javascript
 {
@@ -117,7 +117,7 @@ for the field would yield `undefined`.
 
 ### `extension.field.setInvalid(Boolean): undefined`
 
-Communicates to the Contentful web application if the field is in a valid state
+Communicates to the twixly web application if the field is in a valid state
 or not. This impacts the styling applied to the field container.
 
 ### `extension.field.onValueChanged(cb): function`
@@ -164,13 +164,13 @@ the example.
 
 Holds the type of the field the extension is attached to. The field type can be
 one of those described [in our api
-documentation](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/content-types).
+documentation](https://www.twixly.com/developers/docs/references/content-management-api/#/reference/content-types).
 
 ### `extension.field.validations: Validation[]`
 
 A list of validations for this field that are defined in the content type. The
 [content type
-documentation](https://www.contentful.com/developers/docs/references/content-management-api/#/reference/content-types/content-type/create/update-a-content-type)
+documentation](https://www.twixly.com/developers/docs/references/content-management-api/#/reference/content-types/content-type/create/update-a-content-type)
 provides more information on the shape of validations.
 
 _Since v2.1.0_
@@ -183,8 +183,8 @@ entry and to get the entry's metadata.
 ### `entry.getSys(): object`
 
 Returns metadata for an entry. The value coincides with the `sys` value of an
-entry returned by the `v0.8.x` of the [Contentful Management
-API](https://github.com/contentful/contentful-management.js/tree/legacy#entry-properties).
+entry returned by the `v0.8.x` of the [twixly Management
+API](https://github.com/twixly/twixly-management.js/tree/legacy#entry-properties).
 
 ### `entry.onSysChanged(cb): function`
 
@@ -225,7 +225,7 @@ titleField.setValue(oldTitle.toUpperCase())
 
 The `space` object exposes methods that allow the extension to read and
 manipulate a wide range of objects in the space. Its API mirrors `v0.8.x` of the
-[`contentful-management` library][cma-js], with a few differences.
+[`twixly-management` library][cma-js], with a few differences.
 
 ### Content Types
 
@@ -367,5 +367,5 @@ not available.
 _Since v3.1.0_
 
 [browserify]: http://browserify.org/
-[cma-js]: https://github.com/contentful/contentful-management.js/tree/legacy
-[package]: https://www.npmjs.com/package/contentful-ui-extensions-sdk
+[cma-js]: https://github.com/twixly/twixly-management.js/tree/legacy
+[package]: https://www.npmjs.com/package/twixly-ui-extensions-sdk
