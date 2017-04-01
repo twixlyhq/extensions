@@ -1,4 +1,4 @@
-# Use these extensions in the Twixly Management App
+# Extensions to be used in the Twixly Management App
 
 This document describes the extensions that is available to be used in the Twixly Management App.
 
