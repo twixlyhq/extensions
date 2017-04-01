@@ -70,8 +70,6 @@ This API gives you access to data about the item type and the item. It has
 the form as described under "item type properties" in our [api
 documentation](https://www.cloudpen.io/item-types.html).
 
-_Since 1.0.0_
-
 ## `extension.field`
 
 This API gives you access to the value and metadata of the field the extension
