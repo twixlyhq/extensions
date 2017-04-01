@@ -5,7 +5,7 @@ with the Twixly Management App.
 
 ## Table of Contents
 
-- [Inclusion into your project](#inclusion-into-your-project)
+- [Inclusion into your project](#inclusion-in-your-project)
 - [Initialization](#initialization)
 - [`extension.contentType`](#extensioncontenttype)
 - [`extension.field`](#extensionfield)
