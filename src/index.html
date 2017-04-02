@@ -5,7 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link rel="shortcut icon" href="/assets/icon-16.png"/>
-    {% if extension_name === 'medium-editor' %}
+    {% if extension_name === 'json-schema-editor' %}
+    {% elseif extension_name === 'medium-editor' %}
       <link rel="stylesheet" href="//cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
       <link rel="stylesheet" href="https://yabwe.github.io/medium-editor/bower_components/medium-editor/dist/css/themes/default.css" type="text/css" media="screen" charset="utf-8">
     {% elseif extension_name === 'odo-vue' %}

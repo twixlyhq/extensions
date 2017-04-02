@@ -1,0 +1,119 @@
+
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.0.3/css/font-awesome.css">
+<script src="https://unpkg.com/json-editor@0.7.28/dist/jsoneditor.min.js"></script>
+<div id="root"></div>
+<script>
+// Set default options
+JSONEditor.defaults.options.theme = 'bootstrap3';
+
+// Initialize the editor
+var editor = new JSONEditor(document.getElementById('root'),{
+  schema: {
+  "title": "Person",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "description": "First and Last name",
+      "minLength": 4,
+      "default": "Jeremy Dorn"
+    },
+    "age": {
+      "type": "integer",
+      "default": 25,
+      "minimum": 18,
+      "maximum": 99
+    },
+    "favorite_color": {
+      "type": "string",
+      "format": "color",
+      "title": "favorite color",
+      "default": "#ffa500"
+    },
+    "gender": {
+      "type": "string",
+      "enum": [
+        "male",
+        "female"
+      ]
+    },
+    "location": {
+      "type": "object",
+      "title": "Location",
+      "properties": {
+        "city": {
+          "type": "string",
+          "default": "San Francisco"
+        },
+        "state": {
+          "type": "string",
+          "default": "CA"
+        },
+        "citystate": {
+          "type": "string",
+          "description": "This is generated automatically from the previous two fields",
+          "template": "{{city}}, {{state}}",
+          "watch": {
+            "city": "location.city",
+            "state": "location.state"
+          }
+        }
+      }
+    },
+    "pets": {
+      "type": "array",
+      "format": "table",
+      "title": "Pets",
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "title": "Pet",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "cat",
+              "dog",
+              "bird",
+              "reptile",
+              "other"
+            ],
+            "default": "dog"
+          },
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "default": [
+        {
+          "type": "dog",
+          "name": "Walter"
+        }
+      ]
+    }
+  }
+}
+});
+
+// Set the value
+// editor.setValue({
+//     name: "John Smith"
+// });
+
+// Get the value
+var data = editor.getValue();
+console.log(data.name); // "John Smith"
+
+// Validate
+var errors = editor.validate();
+if(errors.length) {
+  // Not valid
+}
+
+// Listen for changes
+editor.on("change",  function() {
+  // Do something...
+});
+</script>
