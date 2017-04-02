@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1" />
     <link rel="shortcut icon" href="/assets/icon-16.png"/>
-    {% if extension_name === 'odo-vue' %}
+    {% if extension_name === 'medium-editor' %}
+      <link rel="stylesheet" href="//cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+      <link rel="stylesheet" href="https://yabwe.github.io/medium-editor/bower_components/medium-editor/dist/css/themes/default.css" type="text/css" media="screen" charset="utf-8">
+    {% elseif extension_name === 'odo-vue' %}
       <link rel="stylesheet" type="text/css" href="/assets/css/todo-vue.css">
     {% elseif extension_name === 'json-schema' %}
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -27,7 +30,11 @@
       <script src="//localhost:8000/js/cms-uikit-0.1.0-dev.js"></script>
     {% endif %} #}
     {# <link rel="stylesheet" href="/assets/css/twixly-extension.css"> #}
-    <script src="/assets/js/twixly-extension.js"></script>
+    {% if process_env.NODE_ENV %}
+      <script src="https://unpkg.com/twixly-extension@latest/dist/twixly-extension.min.js"></script>
+    {% else %}
+      <script src="http://localhost:13000/dist/twixly-extension.min.js"></script>
+    {% endif %}
   </head>
   <body class="clearfix extension-{{extension_name}} {% if extension_name === 'ile' %}app-navbar-fixed-top{% endif %}" style="height: auto;">
     {% set extension_template = extension_name + '.html' %}
