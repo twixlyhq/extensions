@@ -19,7 +19,7 @@
   function insertContent() {
     var fieldValue = ext.field.getValue();
     if (fieldValue) {
-      $('#clientframe').get(0).contentWindow.document.documentElement.innerHTML = fieldValue;
+      document.getElementById('clientframe').contentWindow.document.documentElement.innerHTML = fieldValue;
     }
   }
 

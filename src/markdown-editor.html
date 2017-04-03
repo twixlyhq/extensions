@@ -22,7 +22,6 @@ Unordered lists can be started using the toolbar or by typing `* `, `- `, or `+ 
   function appStart(extension) {
     var formGroup = document.querySelector('body');
     var textarea = document.querySelector('#demo2');
-    
     var simplemde = new SimpleMDE({
       element: document.getElementById('demo2'),
       spellChecker: false,
@@ -32,7 +31,6 @@ Unordered lists can be started using the toolbar or by typing `* `, `- `, or `+ 
       //   unique_id: 'demo2',
       // },
     });
-
     if (extension.field.getValue()) {
       simplemde.value(extension.field.getValue());
     }
