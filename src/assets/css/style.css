@@ -1,3 +1,13 @@
+/* Extension One Page Website Builder */
+.extension-one-page-website-builder {
+  
+}
+
+.extension-one-page-website-builder .js-html {
+  display: none;
+}
+
+
 /* Extension JSON Schema */
 .extension-json-schema {
   background-color: #f1f1f1;

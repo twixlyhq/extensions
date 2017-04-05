@@ -1,0 +1,505 @@
+
+<link rel="stylesheet" type="text/css" href="/assets/css/dnd-website-builder.css">
+<div id="dragitemslist">
+  <h3>Blocks</h3>
+  <div>
+    <ul id="dragitemslistcontainer">
+      <li draggable="true">
+        <i class="fa fa-image"></i><p>Hero</p>
+        <div class="js-html">
+          <div class="jumbotron js-block block">
+            <div class="container">
+              <h1 class="js-editable">Hello, world!</h1>
+              <div class="js-editable">
+              <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+              </div>
+              <p class="js-editable">
+                <a href="#" class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a>
+              </p>
+            </div>
+        </div>
+        </div>
+      </li>
+      <li draggable="true">
+        <i class="fa fa-file-text-o"></i><p>Text</p>
+        <div class="js-html">
+          <div class="teasers js-block block">
+            <div class="container editable">
+              <div class="row">
+                <div class="col-md-4">
+                  <h2 class="js-editable">Heading</h2>
+                  <div class="js-editable">
+                  <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+                  </div>
+                  <p>
+                      <a class="btn btn-default js-editable" href="#" role="button">View details &raquo;</a>
+                  </p>
+                </div>
+                <div class="col-md-4">
+                  <h2 class="js-editable">Heading</h2>
+                  <div class="js-editable">
+                  <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+                  </div>
+                  <p>
+                      <a class="btn btn-default js-editable" href="#" role="button">View details &raquo;</a>
+                  </p>
+                </div>
+                <div class="col-md-4">
+                  <h2 class="js-editable">Heading</h2>
+                  <div class="js-editable">
+                  <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+                  </div>
+                  <p>
+                      <a class="btn btn-default js-editable" href="#" role="button">View details &raquo;</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li draggable="true" style="display: none;">
+        <i class="fa fa-sign-in"></i><p>Login Form</p>
+        <div class="js-html">
+          <div class="well login-box js-block block">
+            <form action="">
+              <legend>Login</legend>
+              <div class="form-group">
+                <label for="username-email">E-mail or Username</label>
+                <input value="" id="username-email" placeholder="E-mail or Username" type="text" class="form-control"/>
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" value="" placeholder="Password" type="text" class="form-control"/>
+              </div>
+              <div class="form-group text-center">
+                <button class="btn btn-danger btn-cancel-action">Cancel</button>
+                <input type="submit" class="btn btn-success btn-login-submit" value="Login"/>
+              </div>
+            </form>
+          </div>
+        </div>
+      </li>
+      <li draggable="true">
+        <i class="fa fa-address-card-o"></i><p>Footer</p>
+        <div class="js-html">
+          <div class="js-block block">
+            <div class="container">
+              <hr>
+                <footer>
+                  <p>&copy; Company 2017</p>
+                </footer>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<div id="clientframe-container">
+    <iframe onload="onePage.init()" id="clientframe" src="/assets/one-page-website.html" frameborder="0"></iframe>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="/assets/js/dnd-website-builder.js"></script>
+<script>
+  var ext;
+  
+  var onePage = {
+    init: function () {
+      this.setContent();
+      // this.setEvents();
+      this.edit.init();
+    },
+    setContent: function () {
+      var fieldValue = ext.field.getValue();
+      var clientFrame = $('#clientframe').contents();
+      if (fieldValue) {
+        clientFrame[0].documentElement.innerHTML = fieldValue;
+      }
+    },
+    setEvents: function () {
+      // var clientFrame = $('#clientframe').contents();
+      // clientFrame[0].body.addEventListener('DOMSubtreeModified', function (e) {
+      //   onePage.edit.init();
+      // }.bind(this), false);
+    }
+  };
+
+  onePage.edit = {
+    init: function () {
+      this.setToolbarEvents();
+      this.setMediumEditor();
+    },
+    // setPreview: function () {
+    //   this.destroyMediumEditor();
+    // },
+    setMediumEditor: function () {
+      var clientFrameWindow = $('#clientframe').get(0).contentWindow;
+      clientFrameWindow.initEditor();
+    },
+    destroyMediumEditor: function () {
+      var clientFrameWindow = $('#clientframe').get(0).contentWindow;
+      clientFrameWindow.destroyEditor();
+    },
+    setToolbarEvents: function () {
+      var clientFrame = $('#clientframe').contents();
+      this.addToolbarToBlock();
+      clientFrame.find('.js-block').each(function() {
+        var block = $(this);
+        var removeBtn = $(this).find('.js-remove');
+        removeBtn.on('click',function(e) {
+          e.preventDefault();
+          block.remove();
+          var html = clientFrame[0].documentElement.innerHTML;
+          ext.field.setValue(html);
+        });
+      });
+    },
+    addToolbarToBlock: function () {
+      var clientFrame = $('#clientframe').contents();
+      this.removeToolbarFromBlock();
+      var toolbarTemplate = this.toolbarTemplate();
+      clientFrame.find('.js-block').each(function() {
+        var block = $(this);
+        block.prepend(toolbarTemplate);
+      });
+    },
+    toolbarTemplate: function () {
+      var str = '';
+      str += '<div class="btn-group js-toolbar toolbar" role="group">';
+      str += '<button class="btn btn-default js-settings">Settings</button>';
+      str += '<button class="btn btn-danger js-remove">Remove</button>';
+      str += '</div>';
+      return str;     
+    },
+    removeToolbarFromBlock: function () {
+      var clientFrame = $('#clientframe').contents();
+      var toolbarTemplate = this.toolbarTemplate();
+      clientFrame.find('.js-block').each(function() {
+        var block = $(this);
+        var toolbar = block.find('.js-toolbar');
+        toolbar.remove();
+      });
+    },
+    onDrop: function (html) {
+      ext.field.setValue(html);
+      // console.log('dropped : )');
+      onePage.edit.init();
+      // this.setMediumEditor();
+    },
+    onDragStart: function () {
+      this.destroyMediumEditor();
+    },
+    onDragEnd: function () {
+      // this.setMediumEditor();
+    }
+  };
+  
+  function appStart(extension) {
+    ext = extension;
+    extension.field.setFullscreen();
+  }
+  
+  twixlyExtension.init({ nableDefault: ['*'] })
+    .then(appStart)
+    .catch(function (err) {
+      console.log(err);
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+{# 
+
+
+<link rel="stylesheet" type="text/css" href="/assets/css/dnd-website-builder.css">
+<div id="dragitemslist">
+  <h3>Blocks</h3>
+  <div>
+    <ul id="dragitemslistcontainer">
+      <li class="js-draggable" draggable="true">
+        <i class="fa fa-image"></i><p>Hero</p>
+        <div class="js-html">
+          <div class="jumbotron js-block block">
+            <div class="container">
+              <h1>Hello, world!</h1>
+              <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+              <p>
+                  <a class="btn btn-primary btn-lg" role="button">Learn more &raquo;</a>
+              </p>
+            </div>
+        </div>
+        </div>
+      </li>
+      <li class="js-draggable" draggable="true">
+        <i class="fa fa-file-text-o"></i><p>Text</p>
+        <div class="js-html">
+          <div class="teasers js-block block">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-4">
+                  <h2>Heading</h2>
+                  <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+                  <p>
+                  <a class="btn btn-default" href="#" role="button">View details &raquo;</a>
+                  </p>
+                </div>
+                <div class="col-md-4">
+                  <h2>Heading</h2>
+                  <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+                  <p>
+                  <a class="btn btn-default" href="#" role="button">View details &raquo;</a>
+                  </p>
+                </div>
+                <div class="col-md-4">
+                  <h2>Heading</h2>
+                  <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet
+                  risus.
+                  </p>
+                  <p>
+                  <a class="btn btn-default" href="#" role="button">View details &raquo;</a>
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+      <li class="js-draggable" style="display: none;">
+        <i class="fa fa-sign-in"></i><p>Login Form</p>
+        <div class="js-html">
+          <div class="well login-box js-block block">
+            <form action="">
+              <legend>Login</legend>
+              <div class="form-group">
+                <label for="username-email">E-mail or Username</label>
+                <input value="" id="username-email" placeholder="E-mail or Username" type="text" class="form-control"/>
+              </div>
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" value="" placeholder="Password" type="text" class="form-control"/>
+              </div>
+              <div class="form-group text-center">
+                <button class="btn btn-danger btn-cancel-action">Cancel</button>
+                <input type="submit" class="btn btn-success btn-login-submit" value="Login"/>
+              </div>
+            </form>
+          </div>
+        </div>
+      </li>
+      <li class="js-draggable" draggable="true">
+        <i class="fa fa-address-card-o"></i><p>Footer</p>
+        <div class="js-html">
+          <div class="js-block block">
+            <div class="container">
+              <hr>
+                <footer>
+                  <p>&copy; Company 2017</p>
+                </footer>
+              </div>
+            </div>
+          </div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<div id="clientframe-container">
+    <iframe onload="onePage.init()" id="clientframe" src="/assets/one-page-website.html" frameborder="0"></iframe>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+<script>
+  var ext;
+  
+  var onePage = {
+    init: function () {
+      this.setContent();
+      // this.setEvents();
+      this.edit.init();
+    },
+    setContent: function () {
+      var fieldValue = ext.field.getValue();
+      var clientFrame = $('#clientframe').contents();
+      if (fieldValue) {
+        clientFrame[0].documentElement.innerHTML = fieldValue;
+      }
+    }
+  };
+
+  onePage.edit = {
+    init: function () {
+      this.setToolbarEvents();
+      this.setDraggableEvents();
+    },
+    setDraggableEvents: function () {
+      var clientFrame = $('#clientframe').contents();
+      $('.js-draggable').draggable({
+        appendTo: 'body',
+        connectToSortable: clientFrame.find('body').sortable({
+          items: '> .js-block',
+          revert: true,
+          iframeFix: true,
+          cursorAt: { top: 0, left: 0 } 
+        }),
+        helper: 'clone',
+        iframeFix: true,
+        iframeScroll: true,
+        helper: function(e) {
+          var el = $(e.target);
+          if (!~el.attr('class').indexOf('js-draggable')) {
+            el = el.parent();
+          }
+          if (!~el.attr('class').indexOf('js-draggable')) {
+            el = el.parent();
+          }
+          // return '<div class="js-block block">' + el.find('.js-html').html() + '</div>';
+          return '<div class="js-block block">Drag me</div>';
+        },
+        // refreshPositions: true,
+        cursorAt: {
+          top: 0,
+          left: 0
+        },
+        // tolerance: 'pointer',
+        revert: 'invalid',
+        start: function (e, ui) {
+          // console.log(ui.helper.position);
+        },
+        drag: function (e, ui) {
+          // ui.helper.css('left', '-200px');
+          console.log(ui.helper.attr('class'));
+          // console.log(e.pageX);
+          // console.log(ui.offset.left);
+          // console.log(ui.position.left);
+          
+        },
+        stop: function (e, ui) {
+          // ui.helper.removeAttr('style');
+          // console.log(e.target);
+          // console.log(ui);
+          if (onePage.edit.onDrop) {
+            onePage.edit.onDrop($('#clientframe').get(0).contentWindow.document.documentElement.innerHTML);
+          }
+        }
+      });
+      clientFrame.find(".js-block").disableSelection();
+    },
+    setToolbarEvents: function () {
+      var clientFrame = $('#clientframe').contents();
+      this.addToolbarToBlock();
+      clientFrame.find('.js-block').each(function() {
+        var block = $(this);
+        var removeBtn = $(this).find('.js-remove');
+        removeBtn.on('click',function(e) {
+          e.preventDefault();
+          block.remove();
+          var html = clientFrame[0].documentElement.innerHTML;
+          ext.field.setValue(html);
+        });
+      });
+    },
+    addToolbarToBlock: function () {
+      var clientFrame = $('#clientframe').contents();
+      this.removeToolbarFromBlock();
+      var toolbarTemplate = this.toolbarTemplate();
+      clientFrame.find('.js-block').each(function() {
+        var block = $(this);
+        block.prepend(toolbarTemplate);
+      });
+    },
+    toolbarTemplate: function () {
+      var str = '';
+      str += '<div class="btn-group js-toolbar toolbar" role="group">';
+      str += '<button class="btn btn-default js-settings">Settings</button>';
+      str += '<button class="btn btn-danger js-remove">Remove</button>';
+      str += '</div>';
+      return str;     
+    },
+    removeToolbarFromBlock: function () {
+      var clientFrame = $('#clientframe').contents();
+      var toolbarTemplate = this.toolbarTemplate();
+      clientFrame.find('.js-block').each(function() {
+        var block = $(this);
+        var toolbar = block.find('.js-toolbar');
+        toolbar.remove();
+      });
+    },
+    onDrop: function (html) {
+      ext.field.setValue(html);
+      onePage.edit.init();
+      console.log('dropped');
+    }
+  };
+  
+  function appStart(extension) {
+    ext = extension;
+    extension.field.setFullscreen();
+  }
+  
+  twixlyExtension.init({ nableDefault: ['*'] })
+    .then(appStart)
+    .catch(function (err) {
+      console.log(err);
+    });
+</script>
+<style>
+  ui-draggable {
+    background-color: red !important;
+  }
+  ui-draggable-handle {
+    background-color: green !important;
+  }
+  ui-draggable-dragging {
+    background-color: green !important;
+  }
+</style>
+
+
+
+
+
+
+ #}
+
+
+
+
+
+
+
+
+
+
+
+{# 
+<div class="editor">
+  <div class="toolbar-container">
+    <div class="toolbar">
+        <ul>
+          <li data-type="layout">Drag 1</li>
+          <li data-type="layout">Drag 2</li>
+        </ul>
+    </div>
+  </div>
+  <div class="preview-container">
+    <iframe class="preview"></iframe>
+  </div>
+</div> #}

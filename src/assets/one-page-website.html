@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/medium-editor/latest/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+    <link rel="stylesheet" href="https://yabwe.github.io/medium-editor/bower_components/medium-editor/dist/css/themes/default.css" type="text/css" media="screen" charset="utf-8">
+    <script src="//cdn.jsdelivr.net/medium-editor/latest/js/medium-editor.min.js"></script>
+</head>
+<body>
+  <div class="jumbotron js-block block">
+    <div class="container editable">
+      <h1 class="js-editable">Hello, world!</h1>
+      <div class="js-editable">
+      <p>This is a template for a simple marketing or informational website. It includes a large callout called a jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+      </div>
+      <p>
+        <a class="btn btn-primary btn-lg js-editable" href="#" role="button">Learn more &raquo;</a>
+      </p>
+    </div>
+  </div>
+  <div class="teasers js-block block">
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-md-4">
+          <h2 class="js-editable">Heading</h2>
+          <div class="js-editable">
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+          </div>
+          <p>
+              <a class="btn btn-default js-editable" href="#" role="button">View details &raquo;</a>
+          </p>
+        </div>
+        <div class="col-md-4">
+          <h2 class="js-editable">Heading</h2>
+          <div class="js-editable">
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+          </div>
+          <p>
+              <a class="btn btn-default js-editable" href="#" role="button">View details &raquo;</a>
+          </p>
+        </div>
+        <div class="col-md-4">
+          <h2 class="js-editable">Heading</h2>
+          <div class="js-editable">
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui.</p>
+          </div>
+          <p>
+              <a class="btn btn-default js-editable" href="#" role="button">View details &raquo;</a>
+          </p>
+        </div>
+      </div>
+      <hr>
+      <footer>
+          <p>&copy; Company 2014</p>
+      </footer>
+    </div>
+  </div>
+</body>
+</html>
+<script>
+var editor;
+function initEditor() {
+  editor = new MediumEditor('.js-editable');
+}
+function destroyEditor() {
+  editor.destroy();  
+}
+</script>
+<style>
+body {
+  in-height: 400px;
+  overflow-x: hidden;
+}
+.container {
+  outline: none;
+}
+.js-editable {
+  outline: none;
+}
+.block{position: relative;}
+.block .toolbar{position:absolute;right: 0;top: 0;z-index: 999;}
+ui-draggable {
+  background-color: red !important;
+}
+ui-draggable-handle {
+  background-color: green !important;
+}
+.ui-draggable-dragging {
+  margin: -15px 0 0 -70px;
+}
+</style>
+

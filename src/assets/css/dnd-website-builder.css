@@ -1,0 +1,52 @@
+html, body {
+  height: 100% !important; padding: 0px; margin: 0px; overflow: hidden;
+}
+#dragitemslist {
+    position: fixed;
+    top: 0px;
+    width: 160px;
+    left: 0px;
+    background: #222;
+    color: #fff;
+    height: 100%;
+    text-align: center;
+}
+#dragitemslist h3 {
+    color: #fff;
+}
+#dragitemslist p {
+    color: #fff;
+}
+#dragitemslistcontainer {
+    list-style: none;
+    padding: 0px;
+}
+#dragitemslistcontainer > li {
+    display: inline-block;
+    margin-bottom: 4px;
+    padding: 10px 15px;
+    cursor: move;
+    color: white;
+    border: 1px solid;
+    width: 120px;
+    color: #fff;
+    background-color: #222;
+    text-shadow: 0px 1px 1px black;
+}
+#dragitemslistcontainer > li i {
+    font-size:40px;
+    margin-bottom:10px;   
+}
+#dragitemslistcontainer > li p {
+    margin:0px;
+}
+#clientframe-container {
+  margin-left: 160px;
+  height: 100%;
+}
+#clientframe {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
